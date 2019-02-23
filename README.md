@@ -1,1 +1,1 @@
-# PocketGartner
+# Pocket Gardening Core
