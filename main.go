@@ -26,17 +26,13 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", handleRoutes)
 
-	if err := tryNeo4j(); err != nil {
-		fmt.Println(err)
-	}
-
 	if err := http.ListenAndServe("0.0.0.0:"+port, r); err != nil {
 		fmt.Println(err)
 	}
 }
 
 func tryNeo4j() error {
-	if driver, err = neo4j.NewDriver("bolt://localhost:7687", neo4j.BasicAuth("username", "password", "")); err != nil {
+	if driver, err = neo4j.NewDriver("bolt://localhost:7687", neo4j.BasicAuth("neo4j", "password", "")); err != nil {
 		return err // handle error
 	}
 	// handle driver lifetime based on your application lifetime requirements
@@ -68,4 +64,7 @@ func tryNeo4j() error {
 
 func handleRoutes(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, "Hello world")
+	if err := tryNeo4j(); err != nil {
+		fmt.Println(err)
+	}
 }
