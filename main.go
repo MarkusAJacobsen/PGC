@@ -1,11 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
+	"github.com/sirupsen/logrus"
 	"io"
-	"log"
 	"net/http"
 	"os"
 )
@@ -20,14 +19,14 @@ var (
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		log.Panic("Port not sat")
+		logrus.Panic("Port not sat")
 	}
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", handleRoutes)
 
 	if err := http.ListenAndServe("0.0.0.0:"+port, r); err != nil {
-		fmt.Println(err)
+		logrus.Error(err)
 	}
 }
 
@@ -53,7 +52,7 @@ func tryNeo4j() error {
 	}
 
 	for result.Next() {
-		fmt.Printf("Created Item with Id = '%d' and Name = '%s'\n", result.Record().GetByIndex(0).(int64), result.Record().GetByIndex(1).(string))
+		logrus.Info("Created Item with Id = '%d' and Name = '%s'\n", result.Record().GetByIndex(0).(int64), result.Record().GetByIndex(1).(string))
 	}
 	if err = result.Err(); err != nil {
 		return err // handle error
@@ -65,6 +64,6 @@ func tryNeo4j() error {
 func handleRoutes(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, "Hello world")
 	if err := tryNeo4j(); err != nil {
-		fmt.Println(err)
+		logrus.Error(err)
 	}
 }
