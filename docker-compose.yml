@@ -1,0 +1,18 @@
+version: '2.0'
+services:
+  web:
+    build: .
+    ports:
+      - 5555:5555
+    links:
+      - neo4j
+    env_file:
+      - .env
+  neo4j:
+    image: neo4j:latest
+    ports:
+      - 7474:7474
+      - 7687:7687
+    volumes:
+      - $HOME/neo4j/data:/data
+      - $HOME/neo4j/logs:/logs
