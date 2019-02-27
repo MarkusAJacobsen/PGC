@@ -4,6 +4,9 @@ all:
 	build release open
 
 build:
+	GOOS=linux go build -tags seabolt_static -a -installsuffix -o pgc .
+
+buildh:
 	heroku container:push web -a ${app-name}
 
 release:
@@ -11,9 +14,6 @@ release:
 
 open:
 	heroku open -a ${app-name}
-
-logs:
-	heroku logs --tail -a ${app-name}
 
 shell:
 	heroku run bash -a ${app-name}
