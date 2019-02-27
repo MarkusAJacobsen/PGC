@@ -13,6 +13,6 @@
 # Running
 ## Locally 
 * Install docker
-* Run `docker-compose up` to start project containers
+* Run `docker-compose up --build` to start project containers
  
    
