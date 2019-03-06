@@ -4,10 +4,13 @@ services:
     build: .
     ports:
       - 5555:5555
-    links:
+    depends_on:
       - neo4j
     env_file:
       - .env
+    networks:
+      - neo4j_go_net
+    restart: on-failure
   neo4j:
     image: neo4j:latest
     ports:
@@ -16,3 +19,11 @@ services:
     volumes:
       - $HOME/neo4j/data:/data
       - $HOME/neo4j/logs:/logs
+    restart: on-failure
+    networks:
+      - neo4j_go_net
+    command: neo4j
+
+networks:
+  neo4j_go_net:
+    driver: bridge
