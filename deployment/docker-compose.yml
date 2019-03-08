@@ -1,13 +1,13 @@
 version: '2.0'
 services:
   web:
-    build: .
+    build: ../.
     ports:
       - 5555:5555
     depends_on:
       - neo4j
     env_file:
-      - .env
+      - ../config/.env
     networks:
       - neo4j_go_net
     restart: on-failure
