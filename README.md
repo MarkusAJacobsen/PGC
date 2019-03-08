@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/MarkusAJacobsen/PGC)](https://goreportcard.com/report/github.com/MarkusAJacobsen/PGC)
+
 # Pocket Gardening Core
 
 # Building 
