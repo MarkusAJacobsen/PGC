@@ -10,7 +10,10 @@ func SetUpRouter() (r *mux.Router) {
 	r = mux.NewRouter()
 
 	r.HandleFunc("/", baseHandle)
-	r.HandleFunc("/plant", plantHandle)
+	pss := r.PathPrefix("/plant").Subrouter()
+
+	pss.HandleFunc("/", plantHandle)
+	pss.HandleFunc("/batch", plantBatchHandle).Methods(http.MethodPost)
 
 	return
 }
