@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
 	"github.com/sirupsen/logrus"
-	"io"
 	"net/http"
 	"os"
+	"pgc/internal"
+	"time"
 )
 
 var (
@@ -22,15 +22,22 @@ func main() {
 		logrus.Panic("Port not sat")
 	}
 
-	r := mux.NewRouter()
-	r.HandleFunc("/", handleRoutes)
+	r := internal.SetUpRouter()
 
-	logrus.Info("Starting up PGC")
-	logrus.Infof("Listing to port: %s", port)
+	printStartUpMsg(port)
 
-	if err := http.ListenAndServe("0.0.0.0:"+port, r); err != nil {
-		logrus.Error(err)
+	srv := &http.Server{
+		Handler:      r,
+		Addr:         "0.0.0.0:" + port,
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
 	}
+
+	logrus.Fatal(srv.ListenAndServe())
+}
+
+func printStartUpMsg(port string) {
+	logrus.Infof("Starting up PGC on port %s", port)
 }
 
 // From neo4j minimal example
@@ -68,12 +75,4 @@ func tryNeo4j() error {
 	}
 
 	return nil
-}
-
-func handleRoutes(w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, "Hello world")
-
-	if err := tryNeo4j(); err != nil {
-		logrus.Error(err)
-	}
 }
