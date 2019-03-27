@@ -33,6 +33,9 @@ func (n *Neo4jPG) Create(cypher string, obj map[string]interface{}) (err error) 
 	return err
 }
 
+// Do - Perform Cypher queries on DB, does not close the session, meaning that you first
+// have to create a session using CreateSession. Subsequently you can perform multiple
+// queries using the same session. CAUTION you have to Close the session in calling function
 func (n *Neo4jPG) Do(cypher string, obj map[string]interface{}) (err error) {
 	var result neo4j.Result
 	_, err = n.session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
