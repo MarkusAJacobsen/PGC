@@ -48,7 +48,39 @@ func (n *Neo4jPG) Do(cypher string, obj map[string]interface{}) (err error) {
 	return err
 }
 
-func (n *Neo4jPG) Read() {}
+func (n *Neo4jPG) Read(cypher string) (res interface{}, err error) {
+	if n.session, err = n.Driver.Session(neo4j.AccessModeRead); err != nil {
+		logrus.Infoln("Error thrown in session")
+		return nil, err
+	}
+	defer n.session.Close()
+
+	res, err = n.session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+		var list []interface{}
+		var result neo4j.Result
+
+		if result, err = tx.Run(cypher, nil); err != nil {
+			return nil, err
+		}
+
+		for result.Next() {
+			logrus.Infof("%s", result.Record())
+			list = append(list, result.Record().GetByIndex(0))
+		}
+
+		if err = result.Err(); err != nil {
+			return nil, err
+		}
+
+		return list, nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return res, err
+}
 
 func (n *Neo4jPG) Update() {}
 

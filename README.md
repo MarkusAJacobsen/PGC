@@ -15,7 +15,7 @@
 # Running
 ## Locally 
 * Install docker
-* Run `docker-compose up --build` to start project containers
+* Run `deployment$ docker-compose up --build` to start project containers
 
 ### Building PGC image separately
 * `src-root$ docker run PORT=5555 -t pgc_web .`

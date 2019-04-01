@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
 	"github.com/sirupsen/logrus"
@@ -14,6 +15,22 @@ func plantHandle(w http.ResponseWriter, r *http.Request) {
 		if err := addPlant(w, r); err != nil {
 			logrus.Errorln(err)
 		}
+		break
+	case http.MethodGet:
+		res, err := fetchPlants()
+		if err != nil {
+			logrus.Errorln(err)
+			w.WriteHeader(500)
+			w.Write([]byte("An error occurred"))
+		}
+
+		if err := json.NewEncoder(w).Encode(res); err != nil {
+			logrus.Errorln(err)
+			w.WriteHeader(500)
+			w.Write([]byte("An error occurred"))
+
+		}
+
 		break
 	}
 }
@@ -74,5 +91,21 @@ func addPlant(w http.ResponseWriter, r *http.Request) (err error) {
 	}
 	defer db.Driver.Close()
 
-	return
+	return nil
+}
+
+func fetchPlants() (res interface{}, err error) {
+	db := Neo4jPG{}
+	if err = db.Connect(); err != nil {
+		return nil, err
+	}
+	defer db.Driver.Close()
+
+	res, err = db.Read(GetAllPlants)
+	if err != nil {
+		return nil, err
+	}
+
+	logrus.Infof("%s", res)
+	return res, err
 }
