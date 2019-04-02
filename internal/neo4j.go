@@ -56,7 +56,7 @@ func (n *Neo4jPG) Read(cypher string) (res interface{}, err error) {
 	defer n.session.Close()
 
 	res, err = n.session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
-		var list []interface{}
+		var list []map[string]interface{}
 		var result neo4j.Result
 
 		if result, err = tx.Run(cypher, nil); err != nil {
@@ -64,8 +64,7 @@ func (n *Neo4jPG) Read(cypher string) (res interface{}, err error) {
 		}
 
 		for result.Next() {
-			logrus.Infof("%s", result.Record())
-			list = append(list, result.Record().GetByIndex(0))
+			list = append(list, result.Record().GetByIndex(0).(neo4j.Node).Props())
 		}
 
 		if err = result.Err(); err != nil {

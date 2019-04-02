@@ -106,6 +106,5 @@ func fetchPlants() (res interface{}, err error) {
 		return nil, err
 	}
 
-	logrus.Infof("%s", res)
 	return res, err
 }
