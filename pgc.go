@@ -25,6 +25,11 @@ func main() {
 		ReadTimeout:  15 * time.Second,
 	}
 
+	db := internal.Neo4jPG{}
+	if err := db.InitializeConstraints([]string{internal.UserConstraintCypher}); err != nil {
+		logrus.Errorln("Constraints could not be established", err.Error())
+	}
+
 	logrus.Fatal(srv.ListenAndServe())
 }
 

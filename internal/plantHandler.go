@@ -13,22 +13,17 @@ func plantHandle(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodPost:
 		if err := addPlant(w, r); err != nil {
-			logrus.Errorln(err)
+			WriteServerError(w, err)
 		}
 		break
 	case http.MethodGet:
 		res, err := fetchPlants()
 		if err != nil {
-			logrus.Errorln(err)
-			w.WriteHeader(500)
-			w.Write([]byte("An error occurred"))
+			WriteServerError(w, err)
 		}
 
 		if err := json.NewEncoder(w).Encode(res); err != nil {
-			logrus.Errorln(err)
-			w.WriteHeader(500)
-			w.Write([]byte("An error occurred"))
-
+			WriteServerError(w, err)
 		}
 
 		break
@@ -101,7 +96,7 @@ func fetchPlants() (res interface{}, err error) {
 	}
 	defer db.Driver.Close()
 
-	res, err = db.Read(GetAllPlants)
+	res, err = db.Read(GetAllPlantsCypher)
 	if err != nil {
 		return nil, err
 	}

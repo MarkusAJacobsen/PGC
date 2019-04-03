@@ -104,3 +104,18 @@ func (n *Neo4jPG) CreateSession(mode neo4j.AccessMode) (err error) {
 	}
 	return
 }
+
+func (n *Neo4jPG) InitializeConstraints(constrains []string) (err error) {
+	n.Connect()
+	n.CreateSession(neo4j.AccessModeWrite)
+	defer n.session.Close()
+	defer n.Driver.Close()
+
+	for _, constraint := range constrains {
+		if n.Do(constraint, nil); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
