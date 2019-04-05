@@ -12,12 +12,14 @@ func SetUpRouter() (r *mux.Router) {
 	r.HandleFunc("/", baseHandle)
 	pss := r.PathPrefix("/plant").Subrouter()
 
-	pss.HandleFunc("/", plantHandle).Methods(http.MethodGet, http.MethodPost)
+	pss.HandleFunc("", plantHandle).Methods(http.MethodGet, http.MethodPost)
 	pss.HandleFunc("/batch", plantBatchHandle).Methods(http.MethodPost)
+
+	r.HandleFunc("/user", userHandle).Methods(http.MethodPost, http.MethodPut)
 
 	return
 }
 
-func baseHandle(w http.ResponseWriter, r *http.Request) {
+func baseHandle(w http.ResponseWriter, _ *http.Request) {
 	io.WriteString(w, "Hello world")
 }
