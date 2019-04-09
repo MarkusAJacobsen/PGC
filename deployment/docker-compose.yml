@@ -1,6 +1,6 @@
 version: '2.0'
 services:
-  web:
+  pgc:
     build: ../.
     ports:
       - 5555:5555
@@ -23,6 +23,17 @@ services:
     networks:
       - neo4j_go_net
     command: neo4j
+  pgl:
+    build: ../pgl
+    ports:
+      - 6113:6113
+    env_file:
+      - ../PGL/config/.env
+    volumes:
+      - $HOME/pgl/logs:/logs
+    networks:
+      - neo4j_go_net
+    restart: on-failure
 
 networks:
   neo4j_go_net:

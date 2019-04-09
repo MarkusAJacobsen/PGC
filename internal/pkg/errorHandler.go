@@ -10,7 +10,7 @@ import (
 	"net/url"
 )
 
-const PGLAddress = "http://127.0.0.1:3333/error"
+const PGLAddress = "http://localhost:6113/error"
 
 func ReportError(errRep pgl.ErrorReport) {
 	b, err := json.Marshal(errRep)
