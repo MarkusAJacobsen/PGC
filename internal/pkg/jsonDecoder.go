@@ -2,7 +2,7 @@ package pkg
 
 import (
 	"encoding/json"
-	"github.com/MarkusAJacobsen/pgl/pkg"
+	pgl "github.com/MarkusAJacobsen/pgl/pkg"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -15,13 +15,13 @@ func GetPostData(body io.Reader, v interface{}, w http.ResponseWriter) (err erro
 	b, err := ioutil.ReadAll(body)
 	if err != nil {
 		http.Error(w, CouldNotRead, http.StatusBadRequest)
-		reportError(pkg.ErrorReport{Msg: CouldNotRead, Err: err.Error()})
+		ReportError(pgl.ErrorReport{Msg: CouldNotRead, Err: err.Error()})
 		return
 	}
 
 	if err = json.Unmarshal(b, v); err != nil {
 		http.Error(w, CouldNotProcess, http.StatusBadRequest)
-		reportError(pkg.ErrorReport{Msg: CouldNotProcess, Err: err.Error()})
+		ReportError(pgl.ErrorReport{Msg: CouldNotProcess, Err: err.Error()})
 		return
 	}
 

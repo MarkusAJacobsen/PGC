@@ -1,8 +1,9 @@
 package internal
 
 import (
+	pgl "github.com/MarkusAJacobsen/pgl/pkg"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
-	"github.com/sirupsen/logrus"
+	"pgc/internal/pkg"
 	"time"
 )
 
@@ -17,7 +18,7 @@ type Neo4jPG struct {
 
 func (n *Neo4jPG) Create(cypher string, obj map[string]interface{}) (err error) {
 	if n.session, err = n.Driver.Session(neo4j.AccessModeWrite); err != nil {
-		logrus.Infoln("Error thrown in session")
+		pkg.ReportError(pgl.ErrorReport{Msg: "Error thrown in session", Err: err.Error()})
 		return err
 	}
 	defer n.session.Close()
@@ -50,7 +51,7 @@ func (n *Neo4jPG) Do(cypher string, obj map[string]interface{}) (err error) {
 
 func (n *Neo4jPG) Read(cypher string) (res interface{}, err error) {
 	if n.session, err = n.Driver.Session(neo4j.AccessModeRead); err != nil {
-		logrus.Infoln("Error thrown in session")
+		pkg.ReportError(pgl.ErrorReport{Msg: "Error thrown in session", Err: err.Error()})
 		return nil, err
 	}
 	defer n.session.Close()

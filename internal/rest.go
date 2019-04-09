@@ -1,9 +1,11 @@
 package internal
 
 import (
+	pgl "github.com/MarkusAJacobsen/pgl/pkg"
 	"github.com/sirupsen/logrus"
 	"io"
 	"net/http"
+	"pgc/internal/pkg"
 )
 
 func RequestBuilder(method string, url string, body io.Reader) (req *http.Request, err error) {
@@ -21,4 +23,5 @@ func WriteServerError(w http.ResponseWriter, err error) {
 	logrus.Errorln(err)
 	w.WriteHeader(500)
 	w.Write([]byte("An error occurred"))
+	pkg.ReportError(pgl.ErrorReport{Msg: "An error occurred", Err: err.Error()})
 }
