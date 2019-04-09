@@ -30,11 +30,10 @@ services:
     env_file:
       - ../PGL/config/.env
     volumes:
-      - $HOME/pgl/logs:/logs
+      - /var/pgl/logs
     networks:
       neo4j_go_net:
         ipv4_address: 172.19.0.3
-
     restart: on-failure
 
 networks:

@@ -5,9 +5,11 @@
   else
     cd ./PGL
     git pull origin master
+    cd ..
  fi
 
-cd ../deployment
+cd ./deployment
+
 docker-compose up --build
 
 exit
