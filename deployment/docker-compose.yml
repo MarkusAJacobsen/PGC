@@ -1,6 +1,6 @@
 version: '2.0'
 services:
-  web:
+  pgc:
     build: ../.
     ports:
       - 5555:5555
@@ -23,7 +23,24 @@ services:
     networks:
       - neo4j_go_net
     command: neo4j
+  pgl:
+    build: ../pgl
+    ports:
+      - 6113:6113
+    env_file:
+      - ../PGL/config/.env
+    volumes:
+      - /var/pgl/logs
+    networks:
+      neo4j_go_net:
+        ipv4_address: 172.19.0.3
+    restart: on-failure
 
 networks:
   neo4j_go_net:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.19.0.0/16
+        gateway: 172.10.0.1

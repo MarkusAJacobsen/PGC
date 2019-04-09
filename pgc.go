@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"pgc/internal"
+	"pgc/internal/pkg"
 	"time"
 )
 
@@ -15,6 +16,7 @@ func main() {
 	}
 
 	r := internal.SetUpRouter()
+	r.Use(pkg.TrafficMiddleware)
 
 	printStartUpMsg(port)
 

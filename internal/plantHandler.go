@@ -2,9 +2,7 @@ package internal
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
-	"github.com/sirupsen/logrus"
 	"net/http"
 	"pgc/internal/pkg"
 )
@@ -42,13 +40,13 @@ func plantBatchHandle(w http.ResponseWriter, r *http.Request) {
 
 	db := Neo4jPG{}
 	if err := db.Connect(); err != nil {
-		logrus.Info(err)
+		WriteServerError(w, err)
 		return
 	}
 
 	for _, encPlant := range encPlants {
 		if err := db.Create(CreatePlantCypher, encPlant); err != nil {
-			fmt.Print(err)
+			WriteServerError(w, err)
 			return
 		}
 	}
