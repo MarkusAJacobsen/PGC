@@ -1,6 +1,8 @@
 package internal
 
 import (
+	"encoding/json"
+	"github.com/gorilla/mux"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
 	"github.com/sirupsen/logrus"
 	"net/http"
@@ -9,6 +11,17 @@ import (
 
 func projectHandle(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
+	case http.MethodGet:
+		res, err := getUserProjects(r)
+		if err != nil {
+			WriteServerError(w, err)
+		}
+
+		if err := json.NewEncoder(w).Encode(res); err != nil {
+			WriteServerError(w, err)
+		}
+
+		break
 	case http.MethodPost:
 		if err := addProject(w, r); err != nil {
 			WriteServerError(w, err)
@@ -46,4 +59,23 @@ func addProject(w http.ResponseWriter, r *http.Request) (err error) {
 	defer db.Driver.Close()
 
 	return nil
+}
+
+func getUserProjects(r *http.Request) (res interface{}, err error) {
+	db := Neo4jPG{}
+	if err = db.Connect(); err != nil {
+		return nil, err
+	}
+	defer db.Driver.Close()
+
+	vars := mux.Vars(r)
+	idToken := vars["idToken"]
+	logrus.Infoln(idToken)
+	params := map[string]interface{}{"idToken": idToken}
+	res, err = db.Read(GetProjectsCypher, params)
+	if err != nil {
+		return nil, err
+	}
+	logrus.Infoln("%s", res)
+	return res, err
 }
