@@ -11,11 +11,11 @@ func SetUpRouter() (r *mux.Router) {
 
 	r.HandleFunc("/", baseHandle)
 	pss := r.PathPrefix("/plant").Subrouter()
-
 	pss.HandleFunc("", plantHandle).Methods(http.MethodGet, http.MethodPost)
 	pss.HandleFunc("/batch", plantBatchHandle).Methods(http.MethodPost)
 
 	r.HandleFunc("/user", userHandle).Methods(http.MethodPost, http.MethodPut)
+	r.HandleFunc("/project", projectHandle).Methods(http.MethodPost, http.MethodPut, http.MethodGet)
 
 	return
 }
