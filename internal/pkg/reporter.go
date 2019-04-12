@@ -22,7 +22,7 @@ func ReportError(errRep pgl.ErrorReport) {
 		return
 	}
 
-	u, err := url.Parse(PGLAddress+errorPath)
+	u, err := url.Parse(PGLAddress + errorPath)
 	if err != nil {
 		panic(err)
 		return
@@ -47,7 +47,7 @@ func TrafficMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		u, err := url.Parse(PGLAddress+trafficPath)
+		u, err := url.Parse(PGLAddress + trafficPath)
 		if err != nil {
 			panic(err)
 			return
