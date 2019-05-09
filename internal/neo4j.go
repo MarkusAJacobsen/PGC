@@ -49,7 +49,7 @@ func (n *Neo4jPG) Do(cypher string, obj map[string]interface{}) (err error) {
 	return err
 }
 
-func (n *Neo4jPG) Read(cypher string) (res interface{}, err error) {
+func (n *Neo4jPG) Read(cypher string, params map[string]interface{}) (res interface{}, err error) {
 	if n.session, err = n.Driver.Session(neo4j.AccessModeRead); err != nil {
 		pkg.ReportError(pgl.ErrorReport{Msg: "Error thrown in session", Err: err.Error()})
 		return nil, err
@@ -60,7 +60,7 @@ func (n *Neo4jPG) Read(cypher string) (res interface{}, err error) {
 		var list []map[string]interface{}
 		var result neo4j.Result
 
-		if result, err = tx.Run(cypher, nil); err != nil {
+		if result, err = tx.Run(cypher, params); err != nil {
 			return nil, err
 		}
 

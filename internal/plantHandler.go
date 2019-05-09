@@ -23,7 +23,6 @@ func plantHandle(w http.ResponseWriter, r *http.Request) {
 		if err := json.NewEncoder(w).Encode(res); err != nil {
 			WriteServerError(w, err)
 		}
-
 		break
 	}
 }
@@ -94,7 +93,7 @@ func fetchPlants() (res interface{}, err error) {
 	}
 	defer db.Driver.Close()
 
-	res, err = db.Read(GetAllPlantsCypher)
+	res, err = db.Read(GetAllPlantsCypher, nil)
 	if err != nil {
 		return nil, err
 	}
