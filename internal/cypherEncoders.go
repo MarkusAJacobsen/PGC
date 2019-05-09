@@ -13,8 +13,9 @@ const LinkUserAndAreaCypher = "MATCH (u:User {idToken: $idToken}) MATCH (a:Area 
 
 const CreateProjectCypher = "MERGE (pr:Project {id: $id, name: $name, startDate: $startDate, climate: $climate}) RETURN pr.id"
 const GetProjectsCypher = "MATCH (u:User {idToken: $idToken})-[:HAS_PROJECT]->(pr:Project) RETURN pr"
-const GetProjectCypher = "MATCH (u:User {idToken: $idToken})-[:HAS_PROJECT]->(pr:Project {id: $id}) RETURN pr"
+const GetProjectCypher = "MATCH (u:User {idToken: $idToken})-[:HAS_PROJECT]->(pr:Project {id: $pId}) RETURN pr"
 const LinkProjectCypher = "MATCH (pr:Project {id: $prId}) MATCH (u:User {idToken: $idToken}) MATCH (p:Plant {id: $pId}) MERGE (u)-[:HAS_PROJECT]->(pr) MERGE (pr)-[:IS_PLANT]->(p) RETURN pr.id"
+const DeleteProjectCypher = "MATCH (pr:Project {id: $id}) DETACH DELETE pr"
 
 func CreatePlant(p pkg.Plant) map[string]interface{} {
 	return map[string]interface{}{
