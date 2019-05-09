@@ -15,7 +15,7 @@ func SetUpRouter() (r *mux.Router) {
 	pss.HandleFunc("/batch", plantBatchHandle).Methods(http.MethodPost)
 
 	r.HandleFunc("/user", userHandle).Methods(http.MethodPost, http.MethodPut)
-	r.HandleFunc("/project/{idToken}", userHandle).Methods(http.MethodGet)
+	r.HandleFunc("/project/{idToken}", projectHandle).Methods(http.MethodGet)
 	r.HandleFunc("/project", projectHandle).Methods(http.MethodPost, http.MethodPut)
 
 	return
