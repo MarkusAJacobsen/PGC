@@ -33,7 +33,7 @@ func updateUser(w http.ResponseWriter, r *http.Request) (err error) {
 	if err = db.CreateSession(neo4j.AccessModeWrite); err != nil {
 		return err
 	}
-	defer db.session.Close()
+	defer db.Session.Close()
 
 	encU := CreateUser(u)
 	if err = db.Do(CreateUserCypher, encU); err != nil {

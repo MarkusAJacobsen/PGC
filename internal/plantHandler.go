@@ -65,7 +65,7 @@ func addPlant(w http.ResponseWriter, r *http.Request) (err error) {
 	if err = db.CreateSession(neo4j.AccessModeWrite); err != nil {
 		return err
 	}
-	defer db.session.Close()
+	defer db.Session.Close()
 
 	encPlant := CreatePlant(plant)
 	if err = db.Do(CreatePlantCypher, encPlant); err != nil {

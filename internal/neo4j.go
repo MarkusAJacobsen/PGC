@@ -13,18 +13,18 @@ type INeo4jPG interface {
 
 type Neo4jPG struct {
 	Driver  neo4j.Driver
-	session neo4j.Session
+	Session neo4j.Session
 }
 
 func (n *Neo4jPG) Create(cypher string, obj map[string]interface{}) (err error) {
-	if n.session, err = n.Driver.Session(neo4j.AccessModeWrite); err != nil {
-		pkg.ReportError(pgl.ErrorReport{Msg: "Error thrown in session", Err: err.Error()})
+	if n.Session, err = n.Driver.Session(neo4j.AccessModeWrite); err != nil {
+		pkg.ReportError(pgl.ErrorReport{Msg: "Error thrown in Session", Err: err.Error()})
 		return err
 	}
-	defer n.session.Close()
+	defer n.Session.Close()
 
 	var result neo4j.Result
-	_, err = n.session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+	_, err = n.Session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
 		if result, err = tx.Run(cypher, obj); err != nil {
 			return nil, err
 		}
@@ -34,12 +34,12 @@ func (n *Neo4jPG) Create(cypher string, obj map[string]interface{}) (err error) 
 	return err
 }
 
-// Do - Perform Cypher queries on DB, does not close the session, meaning that you first
-// have to create a session using CreateSession. Subsequently you can perform multiple
-// queries using the same session. CAUTION you have to Close the session in calling function
+// Do - Perform Cypher queries on DB, does not close the Session, meaning that you first
+// have to create a Session using CreateSession. Subsequently you can perform multiple
+// queries using the same Session. CAUTION you have to Close the Session in calling function
 func (n *Neo4jPG) Do(cypher string, obj map[string]interface{}) (err error) {
 	var result neo4j.Result
-	_, err = n.session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+	_, err = n.Session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
 		if result, err = tx.Run(cypher, obj); err != nil {
 			return nil, err
 		}
@@ -50,13 +50,13 @@ func (n *Neo4jPG) Do(cypher string, obj map[string]interface{}) (err error) {
 }
 
 func (n *Neo4jPG) Read(cypher string, params map[string]interface{}) (res interface{}, err error) {
-	if n.session, err = n.Driver.Session(neo4j.AccessModeRead); err != nil {
-		pkg.ReportError(pgl.ErrorReport{Msg: "Error thrown in session", Err: err.Error()})
+	if n.Session, err = n.Driver.Session(neo4j.AccessModeRead); err != nil {
+		pkg.ReportError(pgl.ErrorReport{Msg: "Error thrown in Session", Err: err.Error()})
 		return nil, err
 	}
-	defer n.session.Close()
+	defer n.Session.Close()
 
-	res, err = n.session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+	res, err = n.Session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
 		var list []map[string]interface{}
 		var result neo4j.Result
 
@@ -100,7 +100,7 @@ func (n *Neo4jPG) Connect() (err error) {
 }
 
 func (n *Neo4jPG) CreateSession(mode neo4j.AccessMode) (err error) {
-	if n.session, err = n.Driver.Session(mode); err != nil {
+	if n.Session, err = n.Driver.Session(mode); err != nil {
 		return err
 	}
 	return
@@ -109,7 +109,7 @@ func (n *Neo4jPG) CreateSession(mode neo4j.AccessMode) (err error) {
 func (n *Neo4jPG) InitializeConstraints(constrains []string) (err error) {
 	n.Connect()
 	n.CreateSession(neo4j.AccessModeWrite)
-	defer n.session.Close()
+	defer n.Session.Close()
 	defer n.Driver.Close()
 
 	for _, constraint := range constrains {
