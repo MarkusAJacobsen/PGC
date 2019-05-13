@@ -27,7 +27,7 @@ const LinkProjectCypher = "MATCH (pr:Project {id: $prId}) MATCH (u:User {idToken
 const DeleteProjectCypher = "MATCH (pr:Project {id: $id}) DETACH DELETE pr"
 
 // Guide
-const CreateGuideCypher = "MERGE (g:Guide {id: $id}) return g.id"
+const CreateGuideCypher = "MERGE (g:Guide {id: $id, title: $title}) return g.id"
 const CreateStageCypher = "MERGE (s:Stage {id: $id, pageNr: $pageNr, text: $text, images: $images}) WITH s MATCH (g:Guide {id: $gId}) MERGE (g)-[:CONTAINS_STAGE]->(s) RETURN g.id"
 const GetGuideCypher = "MATCH (g:Guide {id: $id})-[:CONTAINS_STAGE]->(s:Stage) WITH { guide: g, stages: collect(s)} AS GuideWithStages RETURN GuideWithStages"
 
@@ -94,7 +94,8 @@ func CreateProjectRelation(pl pkg.ProjectLink) map[string]interface{} {
 
 func CreateGuide(g pkg.Guide) map[string]interface{} {
 	return map[string]interface{}{
-		"id": g.Id,
+		"id":    g.Id,
+		"title": g.Title,
 	}
 }
 

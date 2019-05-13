@@ -2,6 +2,7 @@ package pkg
 
 type Guide struct {
 	Id     string  `json:"id"`
+	Title  string  `json:"title"`
 	Stages []Stage `json:"stages"`
 }
 
