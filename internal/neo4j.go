@@ -57,7 +57,7 @@ func (n *Neo4jPG) Read(cypher string, params map[string]interface{}) (res interf
 	defer n.Session.Close()
 
 	res, err = n.Session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
-		var list []map[string]interface{}
+		var list []interface{}
 		var result neo4j.Result
 
 		if result, err = tx.Run(cypher, params); err != nil {
@@ -65,7 +65,17 @@ func (n *Neo4jPG) Read(cypher string, params map[string]interface{}) (res interf
 		}
 
 		for result.Next() {
-			list = append(list, result.Record().GetByIndex(0).(neo4j.Node).Props())
+			res := result.Record().GetByIndex(0)
+
+			switch res.(type) {
+			case neo4j.Node:
+				props := res.(neo4j.Node).Props()
+				list = append(list, props)
+				break
+			case map[string]interface{}:
+				list = append(list, res)
+				break
+			}
 		}
 
 		if err = result.Err(); err != nil {

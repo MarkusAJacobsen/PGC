@@ -9,6 +9,7 @@ const CreatePlantCypher = "MERGE (p:Plant { id: $id, name: $name, latinName: $la
 const CreatePlantFamilyCypher = "MERGE (f:Family { name: $name }) RETURN f.name"
 const LinkPlantAndFamilyCypher = "MATCH (p:Plant {name: $name}) MATCH (f:Family {name: $family}) MERGE (p)-[:IS_IN]->(f) RETURN p.name"
 const GetAllPlantsCypher = "MATCH (p:Plant) RETURN p"
+const GetPlantCypher = "MATCH (p:Plant {id: $pId}) RETURN p"
 
 // User
 const CreateUserCypher = "MERGE (u:User {idToken: $idToken}) ON MATCH SET u.origin = $origin, u.email = $email ON CREATE SET u.name = $name, u.origin = $origin, u.email = $email RETURN u.idToken"
@@ -25,6 +26,7 @@ const DeleteProjectCypher = "MATCH (pr:Project {id: $id}) DETACH DELETE pr"
 // Guide
 const CreateGuideCypher = "MERGE (g:Guide {id: $id}) return g.id"
 const CreateStageCypher = "MERGE (s:Stage {id: $id, pageNr: $pageNr, text: $text, images: $images}) WITH s MATCH (g:Guide {id: $gId}) MERGE (g)-[:CONTAINS_STAGE]->(s) RETURN g.id"
+const GetGuideCypher = "MATCH (g:Guide {id: $id})-[:CONTAINS_STAGE]->(s:Stage) WITH { guide: g, stages: collect(s)} AS GuideWithStages RETURN GuideWithStages"
 
 func CreatePlant(p pkg.Plant) map[string]interface{} {
 	return map[string]interface{}{

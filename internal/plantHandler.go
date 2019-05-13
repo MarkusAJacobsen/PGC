@@ -2,6 +2,7 @@ package internal
 
 import (
 	"encoding/json"
+	"github.com/gorilla/mux"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
 	"net/http"
 	"pgc/internal/pkg"
@@ -15,7 +16,15 @@ func plantHandle(w http.ResponseWriter, r *http.Request) {
 		}
 		break
 	case http.MethodGet:
-		res, err := fetchPlants()
+		vars := mux.Vars(r)
+		var res interface{}
+		var err error
+		if vars["pId"] != "" {
+			res, err = fetchPlant(vars["pId"])
+		} else {
+			res, err = fetchPlants()
+		}
+
 		if err != nil {
 			WriteServerError(w, err)
 		}
@@ -23,7 +32,6 @@ func plantHandle(w http.ResponseWriter, r *http.Request) {
 		if err := json.NewEncoder(w).Encode(res); err != nil {
 			WriteServerError(w, err)
 		}
-		break
 	}
 }
 
@@ -43,8 +51,20 @@ func plantBatchHandle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for _, encPlant := range encPlants {
+	for i, encPlant := range encPlants {
 		if err := db.Create(CreatePlantCypher, encPlant); err != nil {
+			WriteServerError(w, err)
+			return
+		}
+
+		encFamily := CreateFamily(plants[i])
+		if err := db.Do(CreatePlantFamilyCypher, encFamily); err != nil {
+			WriteServerError(w, err)
+			return
+		}
+
+		encPlantRelation := CreatePlantRelation(plants[i])
+		if err := db.Do(LinkPlantAndFamilyCypher, encPlantRelation); err != nil {
 			WriteServerError(w, err)
 			return
 		}
@@ -94,6 +114,22 @@ func fetchPlants() (res interface{}, err error) {
 	defer db.Driver.Close()
 
 	res, err = db.Read(GetAllPlantsCypher, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, err
+}
+
+func fetchPlant(pId string) (res interface{}, err error) {
+	db := Neo4jPG{}
+	if err = db.Connect(); err != nil {
+		return nil, err
+	}
+	defer db.Driver.Close()
+
+	param := map[string]interface{}{"pId": pId}
+	res, err = db.Read(GetPlantCypher, param)
 	if err != nil {
 		return nil, err
 	}
