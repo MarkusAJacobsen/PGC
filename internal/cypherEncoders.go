@@ -10,11 +10,14 @@ const CreatePlantFamilyCypher = "MERGE (f:Family { name: $name }) RETURN f.name"
 const LinkPlantAndFamilyCypher = "MATCH (p:Plant {name: $name}) MATCH (f:Family {name: $family}) MERGE (p)-[:IS_IN]->(f) RETURN p.name"
 const GetAllPlantsCypher = "MATCH (p:Plant) RETURN p"
 const GetPlantCypher = "MATCH (p:Plant {id: $pId}) RETURN p"
+const DeletePlantCypher = "MATCH (p:Plant {id: $pId}) DETACH DELETE p"
 
 // User
 const CreateUserCypher = "MERGE (u:User {idToken: $idToken}) ON MATCH SET u.origin = $origin, u.email = $email ON CREATE SET u.name = $name, u.origin = $origin, u.email = $email RETURN u.idToken"
 const CreateAreaCypher = "MERGE (a:Area {area: $area}) RETURN a.area"
 const LinkUserAndAreaCypher = "MATCH (u:User {idToken: $idToken}) MATCH (a:Area {area: $area}) MERGE (u)-[:LIVES]->(a) RETURN u.idToken"
+const GetUserCypher = "MATCH (u:User {idToken: $idToken}) RETURN u"
+const DeleteUserCypher = "MATCH (u:User {idToken: $idToken}) DETACH DELETE u"
 
 // Project
 const CreateProjectCypher = "MERGE (pr:Project {id: $id, name: $name, startDate: $startDate, climate: $climate}) RETURN pr.id"

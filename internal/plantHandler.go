@@ -32,6 +32,12 @@ func plantHandle(w http.ResponseWriter, r *http.Request) {
 		if err := json.NewEncoder(w).Encode(res); err != nil {
 			WriteServerError(w, err)
 		}
+		break
+	case http.MethodDelete:
+		if err := deletePlant(r); err != nil {
+			WriteServerError(w, err)
+		}
+		break
 	}
 }
 
@@ -104,6 +110,28 @@ func addPlant(w http.ResponseWriter, r *http.Request) (err error) {
 	defer db.Driver.Close()
 
 	return nil
+}
+
+func deletePlant(r *http.Request) (err error) {
+	db := Neo4jPG{}
+	if err = db.Connect(); err != nil {
+		return err
+	}
+	defer db.Driver.Close()
+
+	if err = db.CreateSession(neo4j.AccessModeWrite); err != nil {
+		return err
+	}
+	defer db.Session.Close()
+
+	vars := mux.Vars(r)
+	pId := vars["pId"]
+	param := map[string]interface{}{"id": pId}
+	if err = db.Do(DeletePlantCypher, param); err != nil {
+		return err
+	}
+
+	return err
 }
 
 func fetchPlants() (res interface{}, err error) {
