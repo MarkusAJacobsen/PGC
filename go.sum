@@ -28,6 +28,8 @@ github.com/lestrrat-go/file-rotatelogs v2.2.0+incompatible h1:eXEwY0f2h6mcobdAxm
 github.com/lestrrat-go/file-rotatelogs v2.2.0+incompatible/go.mod h1:ZQnN8lSECaebrkQytbHj4xNgtg8CR7RYXnPok8e0EHA=
 github.com/lestrrat-go/strftime v0.0.0-20180821113735-8b31f9c59b0f h1:/o/LRlB6dBTBNViFglNdGfsDHBjdL8Yvfm7qQE4ZUh0=
 github.com/lestrrat-go/strftime v0.0.0-20180821113735-8b31f9c59b0f/go.mod h1:RMlXygAD3c48Psmr06d2G75L4E4xxzxkIe/+ppX9eAU=
+github.com/mitchellh/mapstructure v1.1.2 h1:fmNYVwqnSfB9mZU6OS2O6GsXM+wcskZDuKQzvN1EDeE=
+github.com/mitchellh/mapstructure v1.1.2/go.mod h1:FVVH3fgwuzCH5S8UJGiWEs2h04kUh9fWfEaFds41c1Y=
 github.com/neo4j-drivers/gobolt v1.7.2 h1:TZwFL+CZCfu+nC8n83LkcoLMzbFYodg+MigwnxLUWr4=
 github.com/neo4j-drivers/gobolt v1.7.2/go.mod h1:O9AUbip4Dgre+CD3p40dnMD4a4r52QBIfblg5k7CTbE=
 github.com/neo4j/neo4j-go-driver v1.7.2 h1:lv7f8REuarVJipSBRCebwzKOzGIXH7m3XlXZIvnyOYM=

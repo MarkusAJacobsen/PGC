@@ -9,6 +9,8 @@ import (
 
 type INeo4jPG interface {
 	Connect() (err error)
+	CreateSession(mode neo4j.AccessMode) (err error)
+	InitializeConstraints(constrains []string) (err error)
 }
 
 type Neo4jPG struct {
@@ -49,7 +51,8 @@ func (n *Neo4jPG) Do(cypher string, obj map[string]interface{}) (err error) {
 	return err
 }
 
-func (n *Neo4jPG) Read(cypher string, params map[string]interface{}) (res interface{}, err error) {
+// Read executes with Read only permissions on neo4j.
+func (n *Neo4jPG) Read(cypher string, params map[string]interface{}, compositeObjName string) (res interface{}, err error) {
 	if n.Session, err = n.Driver.Session(neo4j.AccessModeRead); err != nil {
 		pkg.ReportError(pgl.ErrorReport{Msg: "Error thrown in Session", Err: err.Error()})
 		return nil, err
@@ -65,15 +68,21 @@ func (n *Neo4jPG) Read(cypher string, params map[string]interface{}) (res interf
 		}
 
 		for result.Next() {
-			res := result.Record().GetByIndex(0)
-
-			switch res.(type) {
+			switch result.Record().GetByIndex(0).(type) {
 			case neo4j.Node:
-				props := res.(neo4j.Node).Props()
+				props := result.Record().GetByIndex(0).(neo4j.Node).Props()
 				list = append(list, props)
 				break
 			case map[string]interface{}:
-				list = append(list, res)
+				res := result.Record().GetByIndex(0).(map[string]interface{})
+				var node interface{}
+				if compositeObjName != "" {
+					node, _ = result.Record().Get(compositeObjName)
+				} else {
+					node = res
+				}
+
+				list = append(list, node)
 				break
 			}
 		}

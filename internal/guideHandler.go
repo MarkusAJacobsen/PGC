@@ -72,7 +72,7 @@ func getGuide(r *http.Request) (res interface{}, err error) {
 	vars := mux.Vars(r)
 	gId := vars["gId"]
 	param := map[string]interface{}{"id": gId}
-	res, err = db.Read(GetGuideCypher, param)
+	res, err = db.Read(GetGuideCypher, param, GuideWithStages)
 	if err != nil {
 		return nil, err
 	}

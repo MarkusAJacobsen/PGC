@@ -141,7 +141,7 @@ func fetchPlants() (res interface{}, err error) {
 	}
 	defer db.Driver.Close()
 
-	res, err = db.Read(GetAllPlantsCypher, nil)
+	res, err = db.Read(GetAllPlantsCypher, nil, "")
 	if err != nil {
 		return nil, err
 	}
@@ -157,7 +157,7 @@ func fetchPlant(pId string) (res interface{}, err error) {
 	defer db.Driver.Close()
 
 	param := map[string]interface{}{"pId": pId}
-	res, err = db.Read(GetPlantCypher, param)
+	res, err = db.Read(GetPlantCypher, param, "")
 	if err != nil {
 		return nil, err
 	}

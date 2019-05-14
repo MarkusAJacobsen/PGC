@@ -12,3 +12,8 @@ type Stage struct {
 	Text   string   `json:"text"`
 	Images []string `json:"images"`
 }
+
+type GuideComposite struct {
+	Guide Guide `json:"guide"`
+	Stages []Stage `json:"stages"`
+}
