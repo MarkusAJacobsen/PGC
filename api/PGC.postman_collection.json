@@ -330,6 +330,19 @@
 						"description": "Delete a plant"
 					},
 					"response": []
+				},
+				{
+					"name": "Link Plant to Guide",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "localhost:5555/plant/plant15577294902/guide/guide1557922893"
+					},
+					"response": []
 				}
 			]
 		}
