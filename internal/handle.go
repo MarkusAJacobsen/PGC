@@ -24,7 +24,7 @@ func SetUpRouter() (r *mux.Router) {
 
 	gss := r.PathPrefix("/guide").Subrouter()
 	gss.HandleFunc("", GuideHandle).Methods(http.MethodPost)
-	gss.HandleFunc("/{gId}", GuideHandle).Methods(http.MethodGet)
+	gss.HandleFunc("/{gId}", GuideHandle).Methods(http.MethodGet, http.MethodDelete)
 
 	return
 }

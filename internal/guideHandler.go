@@ -27,6 +27,11 @@ func GuideHandle(w http.ResponseWriter, r *http.Request) {
 			WriteServerError(w, err)
 		}
 		break
+	case http.MethodDelete:
+		if err := deleteGuide(r); err != nil {
+			WriteServerError(w, err)
+		}
+		break
 	}
 }
 
@@ -93,8 +98,12 @@ func handleGetRecord(rec neo4j.Record) (res interface{}, err error) {
 	if !ok {
 		return nil, errors.New("Could not find key 'stages' in Record")
 	}
+	pageNumbers, ok := rec.Get("pageNumbers")
+	if !ok {
+		return nil, errors.New("Could not find key 'pageNumbers' in Record")
+	}
 
-	s := getStages(stages)
+	s := getStages(stages, pageNumbers.([]interface{}))
 
 	return pkg.Guide{
 		Id:    id.(string),
@@ -103,7 +112,12 @@ func handleGetRecord(rec neo4j.Record) (res interface{}, err error) {
 	}, nil
 }
 
-func getStages(stages interface{}) ([]pkg.Stage) {
+func getStages(stages interface{}, pageNumbers []interface{}) ([]pkg.Stage) {
+	pageNrArr := make([]int64, len(pageNumbers))
+	for i, pN := range pageNumbers {
+		pageNrArr[i] = pN.(neo4j.Relationship).Props()["pageNr"].(int64)
+	}
+
 	s := make([]pkg.Stage, len(stages.([]interface{})))
 	for i, v := range stages.([]interface{}) {
 		raw := v.(neo4j.Node).Props()
@@ -123,9 +137,35 @@ func getStages(stages interface{}) ([]pkg.Stage) {
 		s[i] = pkg.Stage{
 			Id: raw["id"].(string),
 			Text: raw["text"].(string),
-			PageNr: raw["pageNr"].(int64),
+			PageNr: pageNrArr[i],
 			Images: images,
 		}
 	}
 	return s
+}
+
+func deleteGuide(r *http.Request) (err error) {
+	db := Neo4jPG{}
+	if err = db.Connect(); err != nil {
+		return err
+	}
+	defer db.Driver.Close()
+
+	if err = db.CreateSession(neo4j.AccessModeWrite); err != nil {
+		return err
+	}
+	defer db.Session.Close()
+
+	vars := mux.Vars(r)
+	id := vars["gId"]
+	param := map[string]interface{}{"id": id}
+	if err = db.Do(DeleteGuideCypher, param); err != nil {
+		return err
+	}
+
+	if err = db.Do(DeleteOrphanedStages, nil); err != nil {
+		return err
+	}
+
+	return err
 }

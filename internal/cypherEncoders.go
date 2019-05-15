@@ -28,8 +28,10 @@ const DeleteProjectCypher = "MATCH (pr:Project {id: $id}) DETACH DELETE pr"
 
 // Guide
 const CreateGuideCypher = "MERGE (g:Guide {id: $id, title: $title}) return g.id"
-const CreateStageCypher = "MERGE (s:Stage {id: $id, pageNr: $pageNr, text: $text, images: $images}) WITH s MATCH (g:Guide {id: $gId}) MERGE (g)-[:CONTAINS_STAGE]->(s) RETURN g.id"
-const GetGuideCypher = "MATCH (g:Guide {id: $id})-[:CONTAINS_STAGE]->(s:Stage) RETURN g.id AS id, g.title AS title, collect(s) AS stages"
+const CreateStageCypher = "MERGE (s:Stage {id: $id, text: $text, images: $images}) WITH s MATCH (g:Guide {id: $gId}) MERGE (g)-[:CONTAINS_STAGE {pageNr: $pageNr}]->(s) RETURN g.id"
+const GetGuideCypher = "MATCH (g:Guide {id: $id})-[c:CONTAINS_STAGE]->(s:Stage) RETURN g.id AS id, g.title AS title, collect(s) AS stages, collect(c) AS pageNumbers"
+const DeleteGuideCypher = "MATCH (g:Guide {id: $id}) DETACH DELETE g"
+const DeleteOrphanedStages = "MATCH (s:Stage) WHERE NOT (s)--() delete (s)"
 
 func CreatePlant(p pkg.Plant) map[string]interface{} {
 	return map[string]interface{}{
