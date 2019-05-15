@@ -193,7 +193,7 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "localhost:5555/guide/guide1557672968",
+						"url": "localhost:5555/guide/guide1557922891",
 						"description": "Get a guide"
 					},
 					"response": []
@@ -212,10 +212,23 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"guide{{$timestamp}}\",\r\n    \"title\": \"GenericGuide{{$randomInt}}\",\r\n    \"stages\": [{\r\n    \t\t\"id\": \"stage1{{$timestamp}}\",\r\n            \"pageNr\": 1,\r\n            \"text\": \"lipsum lorem\",\r\n            \"images\": [\"imgur url\", \"imgur url\"]\r\n        },\r\n        {\r\n    \t\t\"id\": \"stage2{{$timestamp}}\",\r\n            \"pageNr\": 2,\r\n            \"text\": \"lipsum lorem\",\r\n            \"images\": [\"imgur url\", \"imgur url\"]\r\n        }\r\n    ]\r\n}"
+							"raw": "{\r\n    \"id\": \"guide{{$timestamp}}\",\r\n    \"title\": \"GenericGuide{{$randomInt}}\",\r\n    \"stages\": [{\r\n    \t\t\"id\": \"stage21557922891\",\r\n            \"pageNr\": 1,\r\n            \"text\": \"lipsum lorem\",\r\n            \"images\": [\"imgur url\", \"imgur url\"]\r\n        },\r\n        {\r\n    \t\t\"id\": \"stage2{{$timestamp}}\",\r\n            \"pageNr\": 2,\r\n            \"text\": \"lipsum lorem\",\r\n            \"images\": [\"imgur url\", \"imgur url\"]\r\n        }\r\n    ]\r\n}"
 						},
 						"url": "localhost:5555/guide",
 						"description": "Add a guide"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Guide",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "localhost:5555/guide/guide1557922812"
 					},
 					"response": []
 				}
