@@ -2,11 +2,9 @@ package internal
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
 	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
 	"net/http"
 	"pgc/internal/pkg"
 )
@@ -78,13 +76,11 @@ func getGuide(r *http.Request) (res interface{}, err error) {
 	if err != nil {
 		return nil, err
 	}
-	logrus.Infof("%s", res)
+
 	return res, nil
 }
 
 func handleGetRecord(rec neo4j.Record) (res interface{}, err error) {
-	fmt.Println(rec)
-
 	id, ok := rec.Get("id")
 	if !ok {
 		return nil, errors.New("Could not find key 'id' in Record")
@@ -98,6 +94,16 @@ func handleGetRecord(rec neo4j.Record) (res interface{}, err error) {
 		return nil, errors.New("Could not find key 'stages' in Record")
 	}
 
+	s := getStages(stages)
+
+	return pkg.Guide{
+		Id:    id.(string),
+		Title: title.(string),
+		Stages: s,
+	}, nil
+}
+
+func getStages(stages interface{}) ([]pkg.Stage) {
 	s := make([]pkg.Stage, len(stages.([]interface{})))
 	for i, v := range stages.([]interface{}) {
 		raw := v.(neo4j.Node).Props()
@@ -107,9 +113,8 @@ func handleGetRecord(rec neo4j.Record) (res interface{}, err error) {
 		if ok {
 			images = make([]string, len(imArr))
 			for key, im := range imArr {
-				fmt.Println(im)
 				_, ok = im.(string)
-				 if ok {
+				if ok {
 					images[key] = im.(string)
 				}
 			}
@@ -122,12 +127,5 @@ func handleGetRecord(rec neo4j.Record) (res interface{}, err error) {
 			Images: images,
 		}
 	}
-
-	fmt.Println(s)
-
-	return pkg.Guide{
-		Id:    id.(string),
-		Title: title.(string),
-		Stages: s,
-	}, nil
+	return s
 }
