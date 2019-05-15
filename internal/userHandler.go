@@ -104,7 +104,7 @@ func getUser(r *http.Request) (res interface{}, err error) {
 	vars := mux.Vars(r)
 	idToken := vars["uIdToken"]
 	param := map[string]interface{}{"idToken": idToken}
-	res, err = db.Read(GetUserCypher, param, "")
+	res, err = db.Read(GetUserCypher, param, nil)
 	if err != nil {
 		return nil, err
 	}

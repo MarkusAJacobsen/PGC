@@ -4,8 +4,6 @@ import (
 	"pgc/internal/pkg"
 )
 
-const GuideWithStages = "GuideWithStages"
-
 // Plant
 const CreatePlantCypher = "MERGE (p:Plant { id: $id, name: $name, latinName: $latinName }) RETURN p.name"
 const CreatePlantFamilyCypher = "MERGE (f:Family { name: $name }) RETURN f.name"
@@ -31,7 +29,7 @@ const DeleteProjectCypher = "MATCH (pr:Project {id: $id}) DETACH DELETE pr"
 // Guide
 const CreateGuideCypher = "MERGE (g:Guide {id: $id, title: $title}) return g.id"
 const CreateStageCypher = "MERGE (s:Stage {id: $id, pageNr: $pageNr, text: $text, images: $images}) WITH s MATCH (g:Guide {id: $gId}) MERGE (g)-[:CONTAINS_STAGE]->(s) RETURN g.id"
-const GetGuideCypher = "MATCH (g:Guide {id: $id})-[:CONTAINS_STAGE]->(s:Stage) WITH { guide: g, stages: collect(s)} AS " + GuideWithStages + " RETURN " + GuideWithStages
+const GetGuideCypher = "MATCH (g:Guide {id: $id})-[:CONTAINS_STAGE]->(s:Stage) RETURN g.id AS id, g.title AS title, collect(s) AS stages"
 
 func CreatePlant(p pkg.Plant) map[string]interface{} {
 	return map[string]interface{}{

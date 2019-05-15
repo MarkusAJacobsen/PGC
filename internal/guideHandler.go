@@ -2,8 +2,10 @@ package internal
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
+	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"net/http"
 	"pgc/internal/pkg"
@@ -72,10 +74,60 @@ func getGuide(r *http.Request) (res interface{}, err error) {
 	vars := mux.Vars(r)
 	gId := vars["gId"]
 	param := map[string]interface{}{"id": gId}
-	res, err = db.Read(GetGuideCypher, param, GuideWithStages)
+	res, err = db.Read(GetGuideCypher, param, handleGetRecord)
 	if err != nil {
 		return nil, err
 	}
 	logrus.Infof("%s", res)
 	return res, nil
+}
+
+func handleGetRecord(rec neo4j.Record) (res interface{}, err error) {
+	fmt.Println(rec)
+
+	id, ok := rec.Get("id")
+	if !ok {
+		return nil, errors.New("Could not find key 'id' in Record")
+	}
+	title, ok := rec.Get("title")
+	if !ok {
+		return nil, errors.New("Could not find key 'title' in Record")
+	}
+	stages, ok := rec.Get("stages")
+	if !ok {
+		return nil, errors.New("Could not find key 'stages' in Record")
+	}
+
+	s := make([]pkg.Stage, len(stages.([]interface{})))
+	for i, v := range stages.([]interface{}) {
+		raw := v.(neo4j.Node).Props()
+
+		var images []string
+		imArr, ok := raw["images"].([]interface{})
+		if ok {
+			images = make([]string, len(imArr))
+			for key, im := range imArr {
+				fmt.Println(im)
+				_, ok = im.(string)
+				 if ok {
+					images[key] = im.(string)
+				}
+			}
+		}
+
+		s[i] = pkg.Stage{
+			Id: raw["id"].(string),
+			Text: raw["text"].(string),
+			PageNr: raw["pageNr"].(int64),
+			Images: images,
+		}
+	}
+
+	fmt.Println(s)
+
+	return pkg.Guide{
+		Id:    id.(string),
+		Title: title.(string),
+		Stages: s,
+	}, nil
 }

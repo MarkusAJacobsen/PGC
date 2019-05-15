@@ -51,8 +51,23 @@ func (n *Neo4jPG) Do(cypher string, obj map[string]interface{}) (err error) {
 	return err
 }
 
+func (n *Neo4jPG) ReadCustom(cypher string, params map[string]interface{}, tx func(cy string, par map[string]interface{}) neo4j.TransactionWork) (res interface{}, err error) {
+	if n.Session, err = n.Driver.Session(neo4j.AccessModeRead); err != nil {
+		pkg.ReportError(pgl.ErrorReport{Msg: "Error thrown in Session", Err: err.Error()})
+		return nil, err
+	}
+	defer n.Session.Close()
+
+	res, err = n.Session.ReadTransaction(tx(cypher, params))
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
 // Read executes with Read only permissions on neo4j.
-func (n *Neo4jPG) Read(cypher string, params map[string]interface{}, compositeObjName string) (res interface{}, err error) {
+func (n *Neo4jPG) Read(cypher string, params map[string]interface{}, cRHandle func(r neo4j.Record) (interface{}, error)) (res interface{}, err error) {
 	if n.Session, err = n.Driver.Session(neo4j.AccessModeRead); err != nil {
 		pkg.ReportError(pgl.ErrorReport{Msg: "Error thrown in Session", Err: err.Error()})
 		return nil, err
@@ -68,22 +83,15 @@ func (n *Neo4jPG) Read(cypher string, params map[string]interface{}, compositeOb
 		}
 
 		for result.Next() {
-			switch result.Record().GetByIndex(0).(type) {
-			case neo4j.Node:
+			if cRHandle != nil {
+				r, err := cRHandle(result.Record())
+				if err != nil {
+					return nil, err
+				}
+				list = append(list, r)
+			} else {
 				props := result.Record().GetByIndex(0).(neo4j.Node).Props()
 				list = append(list, props)
-				break
-			case map[string]interface{}:
-				res := result.Record().GetByIndex(0).(map[string]interface{})
-				var node interface{}
-				if compositeObjName != "" {
-					node, _ = result.Record().Get(compositeObjName)
-				} else {
-					node = res
-				}
-
-				list = append(list, node)
-				break
 			}
 		}
 

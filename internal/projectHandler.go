@@ -90,7 +90,7 @@ func getUserProjects(r *http.Request) (res interface{}, err error) {
 	vars := mux.Vars(r)
 	idToken := vars["uIdToken"]
 	params := map[string]interface{}{"idToken": idToken}
-	res, err = db.Read(GetProjectsCypher, params, "")
+	res, err = db.Read(GetProjectsCypher, params, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +109,7 @@ func getUserProject(r *http.Request) (res interface{}, err error) {
 	idToken := vars["uIdToken"]
 	projectId := vars["pId"]
 	params := map[string]interface{}{"idToken": idToken, "pId": projectId}
-	res, err = db.Read(GetProjectCypher, params, "")
+	res, err = db.Read(GetProjectCypher, params, nil)
 	if err != nil {
 		return nil, err
 	}
