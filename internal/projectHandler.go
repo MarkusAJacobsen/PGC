@@ -65,7 +65,7 @@ func addProject(w http.ResponseWriter, r *http.Request) (err error) {
 	if err = db.CreateSession(neo4j.AccessModeWrite); err != nil {
 		return err
 	}
-	defer db.session.Close()
+	defer db.Session.Close()
 
 	encProject := CreateProject(pl.Project)
 	if err = db.Do(CreateProjectCypher, encProject); err != nil {
@@ -90,7 +90,7 @@ func getUserProjects(r *http.Request) (res interface{}, err error) {
 	vars := mux.Vars(r)
 	idToken := vars["uIdToken"]
 	params := map[string]interface{}{"idToken": idToken}
-	res, err = db.Read(GetProjectsCypher, params)
+	res, err = db.Read(GetProjectsCypher, params, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +98,7 @@ func getUserProjects(r *http.Request) (res interface{}, err error) {
 	return res, err
 }
 
-func getUserProject(r* http.Request) (res interface{}, err error) {
+func getUserProject(r *http.Request) (res interface{}, err error) {
 	db := Neo4jPG{}
 	if err = db.Connect(); err != nil {
 		return nil, err
@@ -109,7 +109,7 @@ func getUserProject(r* http.Request) (res interface{}, err error) {
 	idToken := vars["uIdToken"]
 	projectId := vars["pId"]
 	params := map[string]interface{}{"idToken": idToken, "pId": projectId}
-	res, err = db.Read(GetProjectCypher, params)
+	res, err = db.Read(GetProjectCypher, params, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +117,7 @@ func getUserProject(r* http.Request) (res interface{}, err error) {
 	return res, err
 }
 
-func deleteProject(r* http.Request) (err error) {
+func deleteProject(r *http.Request) (err error) {
 	db := Neo4jPG{}
 	if err = db.Connect(); err != nil {
 		return err
@@ -127,7 +127,7 @@ func deleteProject(r* http.Request) (err error) {
 	if err = db.CreateSession(neo4j.AccessModeWrite); err != nil {
 		return err
 	}
-	defer db.session.Close()
+	defer db.Session.Close()
 
 	vars := mux.Vars(r)
 	projectId := vars["pId"]

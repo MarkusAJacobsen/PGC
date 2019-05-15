@@ -1,0 +1,350 @@
+{
+	"info": {
+		"_postman_id": "7f63b4bb-f0e8-4e79-a950-d3ddb25045ee",
+		"name": "PGC",
+		"description": "PGC RESTful api documentation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Project",
+			"item": [
+				{
+					"name": "Get user project",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "localhost:5555/user/efweewfew/project/nfewnffewfwef",
+						"description": "Fetch a specific user project\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Get user projects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "localhost:5555/user/efweewfew/projects",
+						"description": "Fetch all projects belonging to a specific user\n\n"
+					},
+					"response": [
+						{
+							"name": "getUserProjects",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": "localhost:5555/project/efweewfew"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 09 May 2019 09:30:06 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "180"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/plain; charset=utf-8"
+								}
+							],
+							"cookie": [],
+							"body": "[{\"climate\":\"Indoor\",\"id\":\"nfewnffewfwef\",\"name\":\"Tomat i hagen\",\"startDate\":\"1555068275137\"},{\"climate\":\"Indoor\",\"id\":\"nfewnf\",\"name\":\"Tomat i stua\",\"startDate\":\"1555068275137\"}]\n"
+						}
+					]
+				},
+				{
+					"name": "Add project",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"project\": {\n        \"id\": \"test{{$timestamp}}\",\n        \"name\": \"test{{$randomInt}}\",\n        \"startDate\": \"{{$timestamp}}\",\n        \"climate\": \"Indoor\"\n    },\n    \"idToken\": \"user1557727905\",\n    \"pId\": \"plant1557665090\"\n}"
+						},
+						"url": "localhost:5555/project",
+						"description": "Add a user specfic project\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete project",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "localhost:5555/project/test1557421374",
+						"description": "Delete a project"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "localhost:5555/user/user1557731044",
+						"description": "Fetch a user"
+					},
+					"response": []
+				},
+				{
+					"name": "Add user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"idToken\": \"user{{$timestamp}}\",\n\t\"name\": \"userName{{$randomint}}\",\n\t\"origin\": \"GG\",\n\t\"email\": \"user{{$timestamp}}@mail.com\"\n}"
+						},
+						"url": "localhost:5555/user",
+						"description": "Add a user"
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"idToken\": \"user1557731126\",\n\t\"name\": \"userName{{$randomInt}}\",\n\t\"origin\": \"GG\",\n\t\"email\": \"user{{$timestamp}}@mail.com\",\n\t\"area\": \"Gjøvik\"\n}"
+						},
+						"url": "localhost:5555/user",
+						"description": "Update a user"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "localhost:5555/user/user1557727905",
+						"description": "Delete a user"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Guide",
+			"item": [
+				{
+					"name": "Get Guide",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "localhost:5555/guide/guide1557922891",
+						"description": "Get a guide"
+					},
+					"response": []
+				},
+				{
+					"name": "New Guide",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"guide{{$timestamp}}\",\r\n    \"title\": \"GenericGuide{{$randomInt}}\",\r\n    \"stages\": [{\r\n    \t\t\"id\": \"stage21557922891\",\r\n            \"pageNr\": 1,\r\n            \"text\": \"lipsum lorem\",\r\n            \"images\": [\"imgur url\", \"imgur url\"]\r\n        },\r\n        {\r\n    \t\t\"id\": \"stage2{{$timestamp}}\",\r\n            \"pageNr\": 2,\r\n            \"text\": \"lipsum lorem\",\r\n            \"images\": [\"imgur url\", \"imgur url\"]\r\n        }\r\n    ]\r\n}"
+						},
+						"url": "localhost:5555/guide",
+						"description": "Add a guide"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Guide",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "localhost:5555/guide/guide1557922812"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Plant",
+			"item": [
+				{
+					"name": "Get Plant",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "localhost:5555/plant/plant15577294902",
+						"description": "Get a specific plant"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Plants",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "localhost:5555/plant",
+						"description": "Fetch all plants"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Plant",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"id\": \"plant{{$timestamp}}\",\r\n\t\"name\": \"Tomat{{$timestamp}}\",\r\n\t\"latinName\": \"tomatus toto\",\r\n\t\"family\": \"Tomatas\"\r\n}"
+						},
+						"url": "localhost:5555/plant",
+						"description": "Add a plant"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Plants Batch",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n\t{\n\t\t\"id\": \"plant{{$timestamp}}\",\n\t\t\"name\": \"Tomat{{$timestamp}}\",\n\t\t\"latinName\": \"tomatus toto\",\n\t\t\"family\": \"Tomatas\"\n\t},\n\t{\n\t\t\"id\": \"plant{{$timestamp}}2\",\n\t\t\"name\": \"Cucumber{{$timestamp}}\",\n\t\t\"latinName\": \"Cucumis sativus\",\n\t\t\"family\": \" Gourd\"\n\t}\n]"
+						},
+						"url": "localhost:5555/plant/batch",
+						"description": "Add an array of plants"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Plant",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "localhost:5555/plant/plant15577294902",
+						"description": "Delete a plant"
+					},
+					"response": []
+				},
+				{
+					"name": "Link Plant to Guide",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "localhost:5555/plant/plant15577294902/guide/guide1557922893"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
