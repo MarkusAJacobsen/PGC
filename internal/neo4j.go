@@ -3,6 +3,8 @@ package internal
 import (
 	pgl "github.com/MarkusAJacobsen/pgl/pkg"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
+	"github.com/sirupsen/logrus"
+	"os"
 	"pgc/internal/pkg"
 	"time"
 )
@@ -16,6 +18,19 @@ type INeo4jPG interface {
 type Neo4jPG struct {
 	Driver  neo4j.Driver
 	Session neo4j.Session
+	Cred Neo4jPGCredentials
+}
+
+type Neo4jPGCredentials struct {
+	URL string
+	User string
+	Password string
+}
+
+var DefaultCred = Neo4jPGCredentials{
+	URL: "bolt://neo4j:testing@neo4j:7687",
+	User: "neo4j",
+	Password: "password",
 }
 
 func (n *Neo4jPG) Create(cypher string, obj map[string]interface{}) (err error) {
@@ -99,7 +114,8 @@ func (n *Neo4jPG) Update() {}
 func (n *Neo4jPG) Delete() {}
 
 func (n *Neo4jPG) Connect() (err error) {
-	n.Driver, err = neo4j.NewDriver("bolt://neo4j:testing@neo4j:7687", neo4j.BasicAuth("neo4j", "password", ""), func(config *neo4j.Config) {
+	n.fetchCredentials()
+	n.Driver, err = neo4j.NewDriver(n.Cred.URL, neo4j.BasicAuth(n.Cred.User, n.Cred.Password, ""), func(config *neo4j.Config) {
 		config.SocketConnectTimeout = 15 * time.Second
 		config.MaxTransactionRetryTime = 15 * time.Second
 	})
@@ -131,4 +147,20 @@ func (n *Neo4jPG) InitializeConstraints(constrains []string) (err error) {
 	}
 
 	return nil
+}
+
+func (n *Neo4jPG) fetchCredentials()  {
+	gUrl := os.Getenv("GRAPHENEDB_BOLT_URL")
+	gUser := os.Getenv("GRAPHENEDB_BOLT_USER")
+	gPassword := os.Getenv("GRAPHENEDB_BOLT_PASSWORD")
+
+	if gUrl == "" && gUser == "" && gPassword == "" {
+		logrus.Infoln("Using default credentials")
+		n.Cred = DefaultCred
+	} else {
+		logrus.Infoln("Using GrapheneDB")
+		n.Cred.URL = gUrl
+		n.Cred.User = gUser
+		n.Cred.Password = gPassword
+	}
 }
