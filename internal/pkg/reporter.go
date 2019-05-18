@@ -31,7 +31,7 @@ func ReportError(errRep pgl.ErrorReport) {
 	sendLog(b, u)
 }
 
-func TrafficMiddleware(next http.Handler) http.Handler {
+func (s *Server) TrafficMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		b, err := httputil.DumpRequest(r, true)
 		if err != nil {
@@ -47,7 +47,7 @@ func TrafficMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		u, err := url.Parse(PGLAddress + trafficPath)
+		u, err := url.Parse(s.LoggerURL + trafficPath)
 		if err != nil {
 			panic(err)
 			return

@@ -9,14 +9,26 @@ import (
 	"time"
 )
 
+const DefaultLogURL = "http://172.19.0.3:6113/report"
+
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
 		logrus.Panic("Port not sat")
 	}
 
+	logURL := os.Getenv("LOG_URL")
+	if logURL == "" {
+		logrus.Infoln("Using default log URL")
+		logURL = DefaultLogURL
+	}
+
+	s := pkg.Server{
+		LoggerURL: logURL,
+	}
+
 	r := internal.SetUpRouter()
-	r.Use(pkg.TrafficMiddleware)
+	r.Use(s.TrafficMiddleware)
 
 	printStartUpMsg(port)
 
