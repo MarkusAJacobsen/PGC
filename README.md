@@ -20,5 +20,7 @@
 ### Building PGC image separately
 * `src-root$ docker run PORT=5555 -t pgc_web .`
 
+### Changing logger PGL URL
+PGC uses [PGL](https://github.com/MarkusAJacobsen/PGL) to log connector and application logs. To set PGL's URL, set environment variable `LOG_URL` to proper URL
  
    
