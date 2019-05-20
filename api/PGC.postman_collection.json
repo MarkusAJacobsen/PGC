@@ -276,6 +276,19 @@
 					"response": []
 				},
 				{
+					"name": "Get plant by barcode",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "localhost:5555/plant/barcode/ijfiojfeoiwjfewjiof"
+					},
+					"response": []
+				},
+				{
 					"name": "Add Plant",
 					"request": {
 						"method": "POST",
@@ -289,7 +302,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"id\": \"plant{{$timestamp}}\",\r\n\t\"name\": \"Tomat{{$timestamp}}\",\r\n\t\"latinName\": \"tomatus toto\",\r\n\t\"family\": \"Tomatas\"\r\n}"
+							"raw": "{\r\n\t\"id\": \"plant{{$timestamp}}\",\r\n\t\"name\": \"Tomat{{$timestamp}}\",\r\n\t\"latinName\": \"tomatus toto\",\r\n\t\"family\": \"Tomatas\",\r\n\t\"barcode\": \"ijfiojfeoiwjfewjiof\",\r\n\t\"category\": 1\r\n}"
 						},
 						"url": "localhost:5555/plant",
 						"description": "Add a plant"
