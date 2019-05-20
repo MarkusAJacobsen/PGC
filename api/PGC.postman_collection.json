@@ -18,7 +18,7 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "localhost:5555/user/efweewfew/project/nfewnffewfwef",
+						"url": "localhost:5555/user/user1557727905/project/test1558373611",
 						"description": "Fetch a specific user project\n"
 					},
 					"response": []
@@ -32,7 +32,7 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "localhost:5555/user/efweewfew/projects",
+						"url": "localhost:5555/user/user1557727905/projects",
 						"description": "Fetch all projects belonging to a specific user\n\n"
 					},
 					"response": [
@@ -83,7 +83,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"project\": {\n        \"id\": \"test{{$timestamp}}\",\n        \"name\": \"test{{$randomInt}}\",\n        \"startDate\": \"{{$timestamp}}\",\n        \"climate\": \"Indoor\"\n    },\n    \"idToken\": \"user1557727905\",\n    \"pId\": \"plant1557665090\"\n}"
+							"raw": "{\n    \"project\": {\n        \"id\": \"test{{$timestamp}}\",\n        \"name\": \"test{{$randomInt}}\",\n        \"climate\": \"Indoor\",\n        \"status\": 1\n    },\n    \"idToken\": \"user1557727905\",\n    \"pId\": \"plant1557665090\"\n}"
 						},
 						"url": "localhost:5555/project",
 						"description": "Add a user specfic project\n"
