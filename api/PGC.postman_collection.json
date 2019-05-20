@@ -83,7 +83,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"project\": {\n        \"id\": \"test{{$timestamp}}\",\n        \"name\": \"test{{$randomInt}}\",\n        \"climate\": \"Indoor\",\n        \"status\": 1\n    },\n    \"idToken\": \"user1557727905\",\n    \"pId\": \"plant1557665090\"\n}"
+							"raw": "{\n    \"project\": {\n        \"name\": \"test{{$randomInt}}\",\n        \"climate\": \"Indoor\",\n        \"status\": 1\n    },\n    \"idToken\": \"user1557727905\",\n    \"pId\": \"plant1557665090\"\n}"
 						},
 						"url": "localhost:5555/project",
 						"description": "Add a user specfic project\n"
@@ -193,7 +193,7 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "localhost:5555/guide/guide1558369577",
+						"url": "localhost:5555/guide/BNFoe5MAsQ5i",
 						"description": "Get a guide"
 					},
 					"response": []
@@ -212,7 +212,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"guide{{$timestamp}}\",\n    \"title\": \"GenericGuide{{$randomInt}}\",\n    \"chapterTitles\": [\"foo\", \"bar\"],\n    \"stages\": [\n        {\n            \"id\": \"stage{{$timestamp}}\",\n            \"title\": \"Hell på jord\",\n            \"pageNr\": 1,\n            \"chapterNr\": 1,\n            \"filter\": \"small\",\n            \"text\": \"lipsum lorem\",\n            \"images\": [\n                \"imgur url\",\n                \"imgur url\"\n            ]\n        },\n        {\n            \"id\": \"stage1{{$timestamp}}\",\n            \"title\": \"Putt frø i jorda\",\n            \"pageNr\": 1,\n            \"chapterNr\": 2,\n            \"filter\": \"medium\",\n            \"text\": \"lipsum lorem\",\n            \"images\": [\n                \"imgur url\",\n                \"imgur url\"\n            ]\n        },\n        {\n            \"id\": \"stage2{{$timestamp}}\",\n            \"title\": \"Vanning\",\n            \"pageNr\": 2,\n            \"chapterNr\": 1,\n            \"filter\": \"small\",\n            \"text\": \"lipsum lorem\",\n            \"images\": [\n                \"imgur url\",\n                \"imgur url\"\n            ]\n        }\n    ]\n}"
+							"raw": "{\n    \"title\": \"GenericGuide{{$randomInt}}\",\n    \"chapterTitles\": [\"foo\", \"bar\"],\n    \"stages\": [\n        {\n            \"title\": \"Hell på jord\",\n            \"pageNr\": 1,\n            \"chapterNr\": 1,\n            \"filter\": \"small\",\n            \"text\": \"lipsum lorem\",\n            \"images\": [\n                \"imgur url\",\n                \"imgur url\"\n            ]\n        },\n        {\n            \"title\": \"Putt frø i jorda\",\n            \"pageNr\": 1,\n            \"chapterNr\": 2,\n            \"filter\": \"medium\",\n            \"text\": \"lipsum lorem\",\n            \"images\": [\n                \"imgur url\",\n                \"imgur url\"\n            ]\n        },\n        {\n            \"title\": \"Vanning\",\n            \"pageNr\": 2,\n            \"chapterNr\": 1,\n            \"filter\": \"small\",\n            \"text\": \"lipsum lorem\",\n            \"images\": [\n                \"imgur url\",\n                \"imgur url\"\n            ]\n        }\n    ]\n}"
 						},
 						"url": "localhost:5555/guide",
 						"description": "Add a guide"
@@ -302,7 +302,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"id\": \"plant{{$timestamp}}\",\r\n\t\"name\": \"Tomat{{$timestamp}}\",\r\n\t\"latinName\": \"tomatus toto\",\r\n\t\"family\": \"Tomatas\",\r\n\t\"barcode\": \"ijfiojfeoiwjfewjiof\",\r\n\t\"category\": 1\r\n}"
+							"raw": "{\r\n\t\"name\": \"Tomat{{$timestamp}}\",\r\n\t\"latinName\": \"tomatus toto\",\r\n\t\"family\": \"Tomatas\",\r\n\t\"barcode\": \"ijfiojfeoiwjfewjiof\",\r\n\t\"category\": 1\r\n}"
 						},
 						"url": "localhost:5555/plant",
 						"description": "Add a plant"
@@ -323,7 +323,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "[\n\t{\n\t\t\"id\": \"plant{{$timestamp}}\",\n\t\t\"name\": \"Tomat{{$timestamp}}\",\n\t\t\"latinName\": \"tomatus toto\",\n\t\t\"family\": \"Tomatas\"\n\t},\n\t{\n\t\t\"id\": \"plant{{$timestamp}}2\",\n\t\t\"name\": \"Cucumber{{$timestamp}}\",\n\t\t\"latinName\": \"Cucumis sativus\",\n\t\t\"family\": \" Gourd\"\n\t}\n]"
+							"raw": "[\n\t{\n\t\t\"name\": \"Tomat{{$timestamp}}\",\n\t\t\"latinName\": \"tomatus toto\",\n\t\t\"family\": \"Tomatas\",\n\t\t\"barcode\": \"ijfiojfeoiwjfewjiof\",\n\t\t\"category\": 1\n\t},\n\t{\n\t\t\"name\": \"Cucumber{{$timestamp}}\",\n\t\t\"latinName\": \"Cucumis sativus\",\n\t\t\"family\": \" Gourd\",\n\t\t\"barcode\": \"ijfiojfeoiwjfewjiof\",\n\t\t\"category\": 1\n\t}\n]"
 						},
 						"url": "localhost:5555/plant/batch",
 						"description": "Add an array of plants"

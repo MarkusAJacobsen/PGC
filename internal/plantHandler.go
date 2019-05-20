@@ -47,8 +47,10 @@ func plantBatchHandle(w http.ResponseWriter, r *http.Request) {
 	var plants []pkg.Plant
 	pkg.GetPostData(r.Body, &plants, w)
 
+	idGen := GetIdGenerator()
 	var encPlants []map[string]interface{}
 	for _, plant := range plants {
+		plant.Id = idGen.GenId(nil)
 		encPlant := CreatePlant(plant)
 		encPlants = append(encPlants, encPlant)
 	}
@@ -94,6 +96,9 @@ func plantGuideHandle(w http.ResponseWriter, r *http.Request) {
 func addPlant(w http.ResponseWriter, r *http.Request) (err error) {
 	plant := pkg.Plant{}
 	pkg.GetPostData(r.Body, &plant, w)
+
+	idGen := GetIdGenerator()
+	plant.Id = idGen.GenId(nil)
 
 	db := Neo4jPG{}
 	if err = db.Connect(); err != nil {

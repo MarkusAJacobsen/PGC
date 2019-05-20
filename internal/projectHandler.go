@@ -55,6 +55,9 @@ func addProject(w http.ResponseWriter, r *http.Request) (err error) {
 	pl := pkg.ProjectLink{}
 	pkg.GetPostData(r.Body, &pl, w)
 
+
+	idGen := GetIdGenerator()
+	pl.Project.Id = idGen.GenId(nil)
 	pl.Project.StartDate = time.Now().String()
 
 	logrus.Infoln("%s", pl)
