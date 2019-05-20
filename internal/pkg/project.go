@@ -1,11 +1,11 @@
 package pkg
 
 type Project struct {
-	Id        string    `json:"id"`
-	Name      string    `json:"name"`
+	Id        string `json:"id"`
+	Name      string `json:"name"`
 	StartDate string `json:"startDate,omitempty"`
-	Climate   string    `json:"climate"`
-	Status    int64     `json:"status"`
+	Climate   string `json:"climate"`
+	Status    int64  `json:"status"`
 }
 
 type ProjectLink struct {
