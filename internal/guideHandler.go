@@ -98,24 +98,29 @@ func handleGetRecord(rec neo4j.Record) (res interface{}, err error) {
 	if !ok {
 		return nil, errors.New("Could not find key 'stages' in Record")
 	}
-	pageNumbers, ok := rec.Get("pageNumbers")
+	stageRelations, ok := rec.Get("containsStageRel")
 	if !ok {
-		return nil, errors.New("Could not find key 'pageNumbers' in Record")
+		return nil, errors.New("Could not find key 'containsStageRel' in Record")
 	}
 
-	s := getStages(stages, pageNumbers.([]interface{}))
+	s := getStages(stages, stageRelations.([]interface{}))
 
 	return pkg.Guide{
-		Id:    id.(string),
-		Title: title.(string),
+		Id:     id.(string),
+		Title:  title.(string),
 		Stages: s,
 	}, nil
 }
 
-func getStages(stages interface{}, pageNumbers []interface{}) ([]pkg.Stage) {
-	pageNrArr := make([]int64, len(pageNumbers))
-	for i, pN := range pageNumbers {
-		pageNrArr[i] = pN.(neo4j.Relationship).Props()["pageNr"].(int64)
+func getStages(stages interface{}, stageRelations []interface{}) []pkg.Stage {
+	pageNums := make([]int64, len(stageRelations))
+	chapterNums := make([]int64, len(stageRelations))
+	filterStrings := make([]string, len(stageRelations))
+	for i, rel := range stageRelations {
+		props := rel.(neo4j.Relationship).Props()
+		pageNums[i] = props["pageNr"].(int64)
+		chapterNums[i] = props["chapterNr"].(int64)
+		filterStrings[i] = props["filter"].(string)
 	}
 
 	s := make([]pkg.Stage, len(stages.([]interface{})))
@@ -135,10 +140,12 @@ func getStages(stages interface{}, pageNumbers []interface{}) ([]pkg.Stage) {
 		}
 
 		s[i] = pkg.Stage{
-			Id: raw["id"].(string),
-			Text: raw["text"].(string),
-			PageNr: pageNrArr[i],
-			Images: images,
+			Id:        raw["id"].(string),
+			Text:      raw["text"].(string),
+			PageNr:    pageNums[i],
+			ChapterNr: chapterNums[i],
+			Filter:    filterStrings[i],
+			Images:    images,
 		}
 	}
 	return s

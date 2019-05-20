@@ -7,10 +7,12 @@ type Guide struct {
 }
 
 type Stage struct {
-	Id     string   `json:"id"`
-	PageNr int64      `json:"pageNr"`
-	Text   string   `json:"text"`
-	Images []string `json:"images"`
+	Id        string   `json:"id"`
+	PageNr    int64    `json:"pageNr"`
+	ChapterNr int64    `json:"chapterNr"`
+	Filter    string   `json:"filter"`
+	Text      string   `json:"text"`
+	Images    []string `json:"images"`
 }
 
 type GuideComposite struct {
