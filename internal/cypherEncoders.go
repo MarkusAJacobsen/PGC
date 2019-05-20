@@ -10,6 +10,7 @@ const CreatePlantFamilyCypher = "MERGE (f:Family { name: $name }) RETURN f.name"
 const LinkPlantAndFamilyCypher = "MATCH (p:Plant {name: $name}) MATCH (f:Family {name: $family}) MERGE (p)-[:IS_IN]->(f) RETURN p.name"
 const GetAllPlantsCypher = "MATCH (p:Plant) RETURN p"
 const GetPlantCypher = "MATCH (p:Plant {id: $pId}) RETURN p"
+const GetPlantBarcodeCypher = "MATCH (p:Plant {barcode: $barcode}) RETURN p"
 const DeletePlantCypher = "MATCH (p:Plant {id: $pId}) DETACH DELETE p"
 
 // User

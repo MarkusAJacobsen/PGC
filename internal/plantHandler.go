@@ -21,6 +21,8 @@ func plantHandle(w http.ResponseWriter, r *http.Request) {
 		var err error
 		if vars["pId"] != "" {
 			res, err = fetchPlant(vars["pId"])
+		} else if vars["barcode"] != ""{
+			res, err = fetchPlantbarcode(vars["barcode"])
 		} else {
 			res, err = fetchPlants()
 		}
@@ -168,6 +170,22 @@ func fetchPlant(pId string) (res interface{}, err error) {
 
 	param := map[string]interface{}{"pId": pId}
 	res, err = db.Read(GetPlantCypher, param, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, err
+}
+
+func fetchPlantbarcode(barcode string) (res interface{}, err error) {
+	db := Neo4jPG{}
+	if err = db.Connect(); err != nil {
+		return nil, err
+	}
+	defer db.Driver.Close()
+
+	param := map[string]interface{}{"barcode": barcode}
+	res, err = db.Read(GetPlantBarcodeCypher, param, nil)
 	if err != nil {
 		return nil, err
 	}
