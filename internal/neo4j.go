@@ -18,18 +18,18 @@ type INeo4jPG interface {
 type Neo4jPG struct {
 	Driver  neo4j.Driver
 	Session neo4j.Session
-	Cred Neo4jPGCredentials
+	Cred    Neo4jPGCredentials
 }
 
 type Neo4jPGCredentials struct {
-	URL string
-	User string
+	URL      string
+	User     string
 	Password string
 }
 
 var DefaultCred = Neo4jPGCredentials{
-	URL: "bolt://neo4j:testing@neo4j:7687",
-	User: "neo4j",
+	URL:      "bolt://neo4j:testing@neo4j:7687",
+	User:     "neo4j",
 	Password: "password",
 }
 
@@ -149,7 +149,7 @@ func (n *Neo4jPG) InitializeConstraints(constrains []string) (err error) {
 	return nil
 }
 
-func (n *Neo4jPG) fetchCredentials()  {
+func (n *Neo4jPG) fetchCredentials() {
 	gUrl := os.Getenv("GRAPHENEDB_BOLT_URL")
 	gUser := os.Getenv("GRAPHENEDB_BOLT_USER")
 	gPassword := os.Getenv("GRAPHENEDB_BOLT_PASSWORD")

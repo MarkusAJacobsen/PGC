@@ -193,7 +193,7 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "localhost:5555/guide/guide1557922891",
+						"url": "localhost:5555/guide/guide1558369577",
 						"description": "Get a guide"
 					},
 					"response": []
@@ -212,7 +212,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"guide{{$timestamp}}\",\r\n    \"title\": \"GenericGuide{{$randomInt}}\",\r\n    \"stages\": [{\r\n    \t\t\"id\": \"stage21557922891\",\r\n            \"pageNr\": 1,\r\n            \"text\": \"lipsum lorem\",\r\n            \"images\": [\"imgur url\", \"imgur url\"]\r\n        },\r\n        {\r\n    \t\t\"id\": \"stage2{{$timestamp}}\",\r\n            \"pageNr\": 2,\r\n            \"text\": \"lipsum lorem\",\r\n            \"images\": [\"imgur url\", \"imgur url\"]\r\n        }\r\n    ]\r\n}"
+							"raw": "{\n    \"id\": \"guide{{$timestamp}}\",\n    \"title\": \"GenericGuide{{$randomInt}}\",\n    \"chapterTitles\": [\"foo\", \"bar\"],\n    \"stages\": [\n        {\n            \"id\": \"stage{{$timestamp}}\",\n            \"title\": \"Hell på jord\",\n            \"pageNr\": 1,\n            \"chapterNr\": 1,\n            \"filter\": \"small\",\n            \"text\": \"lipsum lorem\",\n            \"images\": [\n                \"imgur url\",\n                \"imgur url\"\n            ]\n        },\n        {\n            \"id\": \"stage1{{$timestamp}}\",\n            \"title\": \"Putt frø i jorda\",\n            \"pageNr\": 1,\n            \"chapterNr\": 2,\n            \"filter\": \"medium\",\n            \"text\": \"lipsum lorem\",\n            \"images\": [\n                \"imgur url\",\n                \"imgur url\"\n            ]\n        },\n        {\n            \"id\": \"stage2{{$timestamp}}\",\n            \"title\": \"Vanning\",\n            \"pageNr\": 2,\n            \"chapterNr\": 1,\n            \"filter\": \"small\",\n            \"text\": \"lipsum lorem\",\n            \"images\": [\n                \"imgur url\",\n                \"imgur url\"\n            ]\n        }\n    ]\n}"
 						},
 						"url": "localhost:5555/guide",
 						"description": "Add a guide"
