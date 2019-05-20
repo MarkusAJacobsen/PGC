@@ -90,14 +90,31 @@ func handleGetRecord(rec neo4j.Record) (res interface{}, err error) {
 	if !ok {
 		return nil, errors.New("Could not find key 'id' in Record")
 	}
+
 	title, ok := rec.Get("title")
 	if !ok {
 		return nil, errors.New("Could not find key 'title' in Record")
 	}
+
+	var chTitlesConverted []string
+	chapterTitles, ok := rec.Get("chapterTitles")
+	if !ok {
+		return nil, errors.New("Could not find key 'chapterTitles' in Record")
+	} else {
+		chTitlesConverted = make([]string, len(chapterTitles.([]interface{})))
+		for key, chT := range chapterTitles.([]interface{}) {
+			_, ok = chT.(string)
+			if ok {
+				chTitlesConverted[key] = chT.(string)
+			}
+		}
+	}
+
 	stages, ok := rec.Get("stages")
 	if !ok {
 		return nil, errors.New("Could not find key 'stages' in Record")
 	}
+
 	stageRelations, ok := rec.Get("containsStageRel")
 	if !ok {
 		return nil, errors.New("Could not find key 'containsStageRel' in Record")
@@ -106,9 +123,10 @@ func handleGetRecord(rec neo4j.Record) (res interface{}, err error) {
 	s := getStages(stages, stageRelations.([]interface{}))
 
 	return pkg.Guide{
-		Id:     id.(string),
-		Title:  title.(string),
-		Stages: s,
+		Id:            id.(string),
+		Title:         title.(string),
+		ChapterTitles: chTitlesConverted,
+		Stages:        s,
 	}, nil
 }
 
@@ -141,6 +159,7 @@ func getStages(stages interface{}, stageRelations []interface{}) []pkg.Stage {
 
 		s[i] = pkg.Stage{
 			Id:        raw["id"].(string),
+			Title:     raw["title"].(string),
 			Text:      raw["text"].(string),
 			PageNr:    pageNums[i],
 			ChapterNr: chapterNums[i],
