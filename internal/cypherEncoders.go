@@ -5,7 +5,7 @@ import (
 )
 
 // Plant
-const CreatePlantCypher = "MERGE (p:Plant { id: $id, name: $name, latinName: $latinName }) RETURN p.name"
+const CreatePlantCypher = "MERGE (p:Plant { id: $id, name: $name, latinName: $latinName, barcode: $barcode, category: $category }) RETURN p.name"
 const CreatePlantFamilyCypher = "MERGE (f:Family { name: $name }) RETURN f.name"
 const LinkPlantAndFamilyCypher = "MATCH (p:Plant {name: $name}) MATCH (f:Family {name: $family}) MERGE (p)-[:IS_IN]->(f) RETURN p.name"
 const GetAllPlantsCypher = "MATCH (p:Plant) RETURN p"
@@ -39,6 +39,8 @@ func CreatePlant(p pkg.Plant) map[string]interface{} {
 		"id":        p.Id,
 		"name":      p.Name,
 		"latinName": p.LatinName,
+		"barcode":   p.Barcode,
+		"category":  p.Category,
 	}
 }
 
