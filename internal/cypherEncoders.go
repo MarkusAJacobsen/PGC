@@ -20,7 +20,7 @@ const GetUserCypher = "MATCH (u:User {idToken: $idToken}) RETURN u"
 const DeleteUserCypher = "MATCH (u:User {idToken: $idToken}) DETACH DELETE u"
 
 // Project
-const CreateProjectCypher = "MERGE (pr:Project {id: $id, name: $name, startDate: $startDate, climate: $climate}) RETURN pr.id"
+const CreateProjectCypher = "MERGE (pr:Project {id: $id, name: $name, startDate: $startDate, status: $status, climate: $climate}) RETURN pr.id"
 const GetProjectsCypher = "MATCH (u:User {idToken: $idToken})-[:HAS_PROJECT]->(pr:Project) RETURN pr"
 const GetProjectCypher = "MATCH (u:User {idToken: $idToken})-[:HAS_PROJECT]->(pr:Project {id: $pId}) RETURN pr"
 const LinkProjectCypher = "MATCH (pr:Project {id: $prId}) MATCH (u:User {idToken: $idToken}) MATCH (p:Plant {id: $pId}) MERGE (u)-[:HAS_PROJECT]->(pr) MERGE (pr)-[:IS_PLANT]->(p) RETURN pr.id"
@@ -83,6 +83,7 @@ func CreateProject(pr pkg.Project) map[string]interface{} {
 		"id":        pr.Id,
 		"name":      pr.Name,
 		"startDate": pr.StartDate,
+		"status":    pr.Status,
 		"climate":   pr.Climate,
 	}
 }
@@ -106,7 +107,7 @@ func CreateGuide(g pkg.Guide) map[string]interface{} {
 func CreateStage(s pkg.Stage) map[string]interface{} {
 	return map[string]interface{}{
 		"id":        s.Id,
-		"title": s.Title,
+		"title":     s.Title,
 		"pageNr":    s.PageNr,
 		"chapterNr": s.ChapterNr,
 		"filter":    s.Filter,
