@@ -39,6 +39,9 @@ func addGuide(w http.ResponseWriter, r *http.Request) (err error) {
 	g := pkg.Guide{}
 	pkg.GetPostData(r.Body, &g, w)
 
+	idGen := GetIdGenerator()
+	g.Id = idGen.GenId(nil)
+
 	db := Neo4jPG{}
 	if err = db.Connect(); err != nil {
 		return err
@@ -57,6 +60,7 @@ func addGuide(w http.ResponseWriter, r *http.Request) (err error) {
 	}
 
 	for _, s := range g.Stages {
+		s.Id = idGen.GenId(nil)
 		encS := CreateStage(s)
 		encS["gId"] = g.Id
 		if err = db.Do(CreateStageCypher, encS); err != nil {

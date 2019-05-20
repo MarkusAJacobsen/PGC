@@ -1,14 +1,14 @@
 package pkg
 
 type Guide struct {
-	Id            string  `json:"id"`
+	Id            string  `json:"id,omitempty"`
 	Title         string  `json:"title,omitempty"`
 	ChapterTitles []string  `json:"chapterTitles"`
 	Stages        []Stage `json:"stages"`
 }
 
 type Stage struct {
-	Id        string   `json:"id"`
+	Id        string   `json:"id,omitempty"`
 	Title     string   `json:"title"`
 	PageNr    int64    `json:"pageNr"`
 	ChapterNr int64    `json:"chapterNr"`
