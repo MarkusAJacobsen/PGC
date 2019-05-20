@@ -7,6 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"net/http"
 	"pgc/internal/pkg"
+	"time"
 )
 
 func projectHandle(w http.ResponseWriter, r *http.Request) {
@@ -53,6 +54,8 @@ func userProjectHandler(w http.ResponseWriter, r *http.Request) {
 func addProject(w http.ResponseWriter, r *http.Request) (err error) {
 	pl := pkg.ProjectLink{}
 	pkg.GetPostData(r.Body, &pl, w)
+
+	pl.Project.StartDate = time.Now().String()
 
 	logrus.Infoln("%s", pl)
 
