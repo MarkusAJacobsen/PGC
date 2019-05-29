@@ -2,10 +2,10 @@ package internal
 
 import (
 	"encoding/json"
+	"github.com/MarkusAJacobsen/PGC/internal/pkg"
 	"github.com/gorilla/mux"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
 	"net/http"
-	"pgc/internal/pkg"
 )
 
 func plantHandle(w http.ResponseWriter, r *http.Request) {

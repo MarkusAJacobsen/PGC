@@ -1,11 +1,11 @@
 package main
 
 import (
+	"github.com/MarkusAJacobsen/PGC/internal"
+	"github.com/MarkusAJacobsen/PGC/internal/pkg"
 	"github.com/sirupsen/logrus"
 	"net/http"
 	"os"
-	"pgc/internal"
-	"pgc/internal/pkg"
 	"time"
 )
 

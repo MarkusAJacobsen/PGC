@@ -1,11 +1,11 @@
 package internal
 
 import (
+	"github.com/MarkusAJacobsen/PGC/internal/pkg"
 	pgl "github.com/MarkusAJacobsen/pgl/pkg"
 	"github.com/sirupsen/logrus"
 	"io"
 	"net/http"
-	"pgc/internal/pkg"
 )
 
 func RequestBuilder(method string, url string, body io.Reader) (req *http.Request, err error) {

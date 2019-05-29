@@ -16,3 +16,10 @@ RUN go build -tags seabolt_static -o pgc .
 EXPOSE 5555:5555
 
 CMD ["./pgc"]
+
+
+
+
+
+
+

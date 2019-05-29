@@ -1,11 +1,11 @@
 package internal
 
 import (
+	"github.com/MarkusAJacobsen/PGC/internal/pkg"
 	pgl "github.com/MarkusAJacobsen/pgl/pkg"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
 	"github.com/sirupsen/logrus"
 	"os"
-	"pgc/internal/pkg"
 	"time"
 )
 

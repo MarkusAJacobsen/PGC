@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"pgc/internal/pkg"
+	"github.com/MarkusAJacobsen/PGC/internal/pkg"
 )
 
 // Plant
