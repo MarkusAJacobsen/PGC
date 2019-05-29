@@ -2,7 +2,6 @@ package internal
 
 import (
 	"encoding/json"
-	"github.com/MarkusAJacobsen/ImgurUploader"
 	"github.com/MarkusAJacobsen/PGC/internal/pkg"
 	"github.com/gorilla/mux"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
@@ -63,25 +62,25 @@ func addGuide(w http.ResponseWriter, r *http.Request) (err error) {
 	for _, s := range g.Stages {
 		s.Id = idGen.GenId(nil)
 
-		for i, img := range s.Images {
-			res, err := UploadImage(img)
-			if err != nil {
-				return err
-			}
-
-			if res.Status != http.StatusOK {
-				resErrJson, err := json.Marshal(res)
-				if err != nil {
-					return err
-				}
-				return errors.New(string(resErrJson))
-			}
-
-			if _, ok := res.Data.(imgurUploader.ImgurSuccessData); !ok {
-				return errors.New("Could not process response from Imgur")
-			}
-			s.Images[i] = res.Data.(imgurUploader.ImgurSuccessData).Link
-		}
+		//for i, img := range s.Images {
+		//	res, err := UploadImage(img)
+		//	if err != nil {
+		//		return err
+		//	}
+		//
+		//	if res.Status != http.StatusOK {
+		//		resErrJson, err := json.Marshal(res)
+		//		if err != nil {
+		//			return err
+		//		}
+		//		return errors.New(string(resErrJson))
+		//	}
+		//
+		//	if _, ok := res.Data.(imgurUploader.ImgurSuccessData); !ok {
+		//		return errors.New("Could not process response from Imgur")
+		//	}
+		//	s.Images[i] = res.Data.(imgurUploader.ImgurSuccessData).Link
+		//}
 
 		encS := CreateStage(s)
 		encS["gId"] = g.Id

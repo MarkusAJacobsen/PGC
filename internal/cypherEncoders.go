@@ -5,11 +5,11 @@ import (
 )
 
 // Plant
-const CreatePlantCypher = "MERGE (p:Plant { id: $id, name: $name, latinName: $latinName, barcode: $barcode, category: $category }) RETURN p.name"
+const CreatePlantCypher = "MERGE (p:Plant { id: $id, name: $name, latinName: $latinName, image: $image, barcode: $barcode, category: $category }) RETURN p.name"
 const CreatePlantFamilyCypher = "MERGE (f:Family { name: $name }) RETURN f.name"
 const LinkPlantAndFamilyCypher = "MATCH (p:Plant {name: $name}) MATCH (f:Family {name: $family}) MERGE (p)-[:IS_IN]->(f) RETURN p.name"
-const GetAllPlantsCypher = "MATCH (p:Plant) RETURN p"
-const GetPlantCypher = "MATCH (p:Plant {id: $pId}) RETURN p"
+const GetAllPlantsCypher = "MATCH (p:Plant)-[c:HAS_GUIDE]->(g:Guide) RETURN p.barcode AS barcode, p.category AS category, p.id AS id, p.image AS image, p.name AS name, p.latinName AS latinName, g.id AS guideID"
+const GetPlantCypher = "MATCH (p:Plant {id: $pId})-[c:HAS_GUIDE]->(g:Guide) RETURN p.barcode AS barcode, p.category AS category, p.id AS id, p.image AS image, p.name AS name, p.latinName AS latinName, g.id AS guideID"
 const GetPlantBarcodeCypher = "MATCH (p:Plant {barcode: $barcode}) RETURN p"
 const DeletePlantCypher = "MATCH (p:Plant {id: $pId}) DETACH DELETE p"
 
@@ -21,7 +21,7 @@ const GetUserCypher = "MATCH (u:User {idToken: $idToken}) RETURN u"
 const DeleteUserCypher = "MATCH (u:User {idToken: $idToken}) DETACH DELETE u"
 
 // Project
-const CreateProjectCypher = "MERGE (pr:Project {id: $id, name: $name, startDate: $startDate, status: $status, climate: $climate}) RETURN pr.id"
+const CreateProjectCypher = "MERGE (pr:Project {id: $id, name: $name, image: $image, startDate: $startDate, status: $status, climate: $climate}) RETURN pr.id"
 const GetProjectsCypher = "MATCH (u:User {idToken: $idToken})-[:HAS_PROJECT]->(pr:Project) RETURN pr"
 const GetProjectCypher = "MATCH (u:User {idToken: $idToken})-[:HAS_PROJECT]->(pr:Project {id: $pId}) RETURN pr"
 const LinkProjectCypher = "MATCH (pr:Project {id: $prId}) MATCH (u:User {idToken: $idToken}) MATCH (p:Plant {id: $pId}) MERGE (u)-[:HAS_PROJECT]->(pr) MERGE (pr)-[:IS_PLANT]->(p) RETURN pr.id"
@@ -40,6 +40,7 @@ func CreatePlant(p pkg.Plant) map[string]interface{} {
 		"id":        p.Id,
 		"name":      p.Name,
 		"latinName": p.LatinName,
+		"image":     p.Image,
 		"barcode":   p.Barcode,
 		"category":  p.Category,
 	}
@@ -86,6 +87,7 @@ func CreateProject(pr pkg.Project) map[string]interface{} {
 		"id":        pr.Id,
 		"name":      pr.Name,
 		"startDate": pr.StartDate,
+		"image":     pr.Image,
 		"status":    pr.Status,
 		"climate":   pr.Climate,
 	}

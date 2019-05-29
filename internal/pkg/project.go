@@ -5,6 +5,7 @@ type Project struct {
 	Name      string `json:"name"`
 	StartDate string `json:"startDate,omitempty"`
 	Climate   string `json:"climate"`
+	Image     string `json:"image"`
 	Status    int64  `json:"status"`
 }
 

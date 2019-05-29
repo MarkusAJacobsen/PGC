@@ -5,6 +5,7 @@ import (
 	"github.com/MarkusAJacobsen/PGC/internal/pkg"
 	"github.com/gorilla/mux"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
+	"github.com/pkg/errors"
 	"net/http"
 )
 
@@ -151,6 +152,53 @@ func deletePlant(r *http.Request) (err error) {
 	return err
 }
 
+func handlePlantRecord(rec neo4j.Record) (res interface{}, err error) {
+	barcode, ok := rec.Get("barcode")
+	if !ok {
+		return nil, errors.New("Could not find key 'barcode' in Record")
+	}
+
+	category, ok := rec.Get("category")
+	if !ok {
+		return nil, errors.New("Could not find key 'category' in Record")
+	}
+
+	id, ok := rec.Get("id")
+	if !ok {
+		return nil, errors.New("Could not find key 'id' in Record")
+	}
+
+	image, ok := rec.Get("image")
+	if !ok {
+		return nil, errors.New("Could not find key 'image' in Record")
+	}
+
+	name, ok := rec.Get("name")
+	if !ok {
+		return nil, errors.New("Could not find key 'name' in Record")
+	}
+
+	latinName, ok := rec.Get("latinName")
+	if !ok {
+		return nil, errors.New("Could not find key 'title' in Record")
+	}
+
+	guideID, ok := rec.Get("guideID")
+	if !ok {
+		return nil, errors.New("Could not find key 'guideID' in Record")
+	}
+
+	return pkg.Plant{
+		Barcode:       barcode.(string),
+		Category:      category.(string),
+		Id:            id.(string),
+		Image:         image.(string),
+		Name:          name.(string),
+		LatinName:     latinName.(string),
+		GuideID:        guideID.(string),
+	}, nil
+}
+
 func fetchPlants() (res interface{}, err error) {
 	db := Neo4jPG{}
 	if err = db.Connect(); err != nil {
@@ -158,7 +206,7 @@ func fetchPlants() (res interface{}, err error) {
 	}
 	defer db.Driver.Close()
 
-	res, err = db.Read(GetAllPlantsCypher, nil, nil)
+	res, err = db.Read(GetAllPlantsCypher, nil, handlePlantRecord)
 	if err != nil {
 		return nil, err
 	}
@@ -174,7 +222,7 @@ func fetchPlant(pId string) (res interface{}, err error) {
 	defer db.Driver.Close()
 
 	param := map[string]interface{}{"pId": pId}
-	res, err = db.Read(GetPlantCypher, param, nil)
+	res, err = db.Read(GetPlantCypher, param, handlePlantRecord)
 	if err != nil {
 		return nil, err
 	}
